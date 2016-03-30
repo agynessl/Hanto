@@ -12,10 +12,10 @@ package hanto.common;
 
 /**
  * Description
+ * 
  * @version Sep 1, 2014
  */
-public interface HantoPiece
-{
+public interface HantoPiece {
 	/**
 	 * @return the color
 	 */

@@ -15,7 +15,6 @@ package hanto.common;
  * 
  * @version Jan 12, 2013
  */
-public enum MoveResult
-{
+public enum MoveResult {
 	OK, BLUE_WINS, RED_WINS, DRAW;
 }

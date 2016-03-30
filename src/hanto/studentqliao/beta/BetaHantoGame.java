@@ -25,8 +25,9 @@ import hanto.studentqliao.common.HantoPieceImpl;
 import java.util.*;
 
 /**
- * <<Fill this in>>
- * @version Mar 16, 2016
+ * Implementation of Beta Hanto
+ * @version Mar 29, 2016
+ * @author Qiaoyu Liao
  */
 public class BetaHantoGame implements HantoGame
 {
@@ -37,12 +38,14 @@ public class BetaHantoGame implements HantoGame
 	
 	private HantoCoordinateImpl blueButterflyHex = null, redButterflyHex = null;
 	
-	private HashMap<Integer, HantoPlayerColor> hexTaken = new HashMap<Integer, HantoPlayerColor>();
+	private final HashMap<Integer, HantoPlayerColor> hexTaken = new HashMap<Integer, HantoPlayerColor>();
 	
 	private final HantoPiece blueButterfly = new HantoPieceImpl(BLUE, BUTTERFLY);
-	private final HantoPiece redButterfly = new HantoPieceImpl(RED, BUTTERFLY);	
-	private final HantoPiece blueSparrow = new HantoPieceImpl(BLUE,SPARROW);
-	private final HantoPiece redSparrow = new HantoPieceImpl(RED,SPARROW);
+	private final HantoPiece redButterfly = new HantoPieceImpl(RED, BUTTERFLY);
+	private final HantoPiece blueSparrow = new HantoPieceImpl(BLUE, SPARROW);
+	private final HantoPiece redSparrow = new HantoPieceImpl(RED, SPARROW);
+	
+	
 	/*
 	 * @see hanto.common.HantoGame#makeMove(hanto.common.HantoPieceType, hanto.common.HantoCoordinate, hanto.common.HantoCoordinate)
 	 */
@@ -50,10 +53,11 @@ public class BetaHantoGame implements HantoGame
 	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from,
 			HantoCoordinate to) throws HantoException
 	{
+		//first check gameOver, HantoPieceType and from
 		if (gameOver) {
 			throw new HantoException("You cannot move after the game is finished");
 		}
-		if (pieceType != BUTTERFLY || pieceType != SPARROW) {
+		if (pieceType != BUTTERFLY && pieceType != SPARROW) {
 			throw new HantoException("Only Butterflies and Sparrows are valid in Beta Hanto");
 		}
 		if(from != null){
@@ -62,30 +66,23 @@ public class BetaHantoGame implements HantoGame
 
 		final HantoCoordinateImpl destination = new HantoCoordinateImpl(to);
 		
-		//check the first move
+		//check if it is the first move
 		if(firstMove){
 			if(destination.getX() != 0 || destination.getY() != 0){
 				throw new HantoException("Blue did not move the firstMove to origin");
 			}
+			
 			if(pieceType == BUTTERFLY){
 				blueButterflyHex = destination;
 			}
-			hexTaken.put(destination.hashCode(),BLUE);
+			hexTaken.put(destination.hashCode(), BLUE);
+			firstMove = false;
 			moveCount++;
+			
 		}
-		//check the rest.. should be 11 moves left
+		
+		//check the rest
 		else{
-			//check first 4 step should have butterfly
-			if(moveCount == 6){
-				if(pieceType != BUTTERFLY && blueButterflyHex == null){
-					throw new HantoException("Blue Butterfly did not put into the borad");
-				}
-			}
-			else if(moveCount == 7){
-				if(pieceType != BUTTERFLY && redButterflyHex == null){
-					throw new HantoException("Red Butterfly did not put into the borad");
-				}
-			}
 			//check if it is in an occupied spot
 			if(hexTaken.containsKey(destination.hashCode())){
 				throw new HantoException("The spot is already taken on the board");
@@ -96,33 +93,63 @@ public class BetaHantoGame implements HantoGame
 				if(hexTaken.containsKey(destination.getNeighbor(d).hashCode())){
 					neighborflag = true;
 				}
-			}			
+			}
 			if(!neighborflag){
 				throw new HantoException("Not play near an adjacent Hex");
 			}
-			//check if the butterfly already exist
+			
+			//when play BLUE side
 			if(moveCount % 2 == 0){
-				if(pieceType == BUTTERFLY && blueButterflyHex != null){
-					throw new HantoException("Blue Butterfly already exist on the board");
+				//if it is a blue butterfly
+				if(pieceType == BUTTERFLY){
+					//if blue butterfly exist on board
+					if(blueButterflyHex != null){
+						throw new HantoException("Blue Butterfly already exist on the board");
+					}
+					else{
+						blueButterflyHex = destination;
+					}
 				}
-				hexTaken.put(destination.hashCode(),BLUE);
+				// if it is a blue sparrow
+				else{
+					if(moveCount == 6 && blueButterflyHex == null){
+						throw new HantoException("Blue Butterfly did not put into the borad");
+					}
+				}
+				hexTaken.put(destination.hashCode(), BLUE);
 			}
+			
+			//when play RED side
 			else{
-				if(pieceType == BUTTERFLY && redButterflyHex != null){
-					throw new HantoException("Red Butterfly already exist on the board");
+				//if it is a red butterfly
+				if(pieceType == BUTTERFLY){
+					//if red butterfly exist on board
+					if(redButterflyHex != null){
+						throw new HantoException("Red Butterfly already exist on the board");
+					}
+					else{
+						redButterflyHex = destination;
+					}
 				}
-				hexTaken.put(destination.hashCode(),RED);
+				//if it is a red sparrow
+				else{
+					if(moveCount == 7 && redButterflyHex == null){
+						throw new HantoException("Red Butterfly did not put into the borad");
+					}
+				}
+				hexTaken.put(destination.hashCode(), RED);
 			}
-				
+			
+			//check the winning condition
 			checkGameOver();
-			moveCount++;				
+			moveCount++;
+			//when all six turns finished
+			if(moveCount == 12){
+				gameOver = true;
+			}
 		}
 		
-		if(moveCount == 12){
-			gameOver = true;
-		}
-		firstMove = false;
-		
+		//get the move result
 		final MoveResult moveResult = (gameOver && blueWin && redWin) ? DRAW : 
 			(gameOver && blueWin) ? BLUE_WINS: 
 				(gameOver && redWin) ? RED_WINS :
@@ -151,36 +178,27 @@ public class BetaHantoGame implements HantoGame
 	@Override
 	public String getPrintableBoard()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		if(hexTaken.size() > 0){
+			return Integer.toString(hexTaken.size());
+		}
+		else{
+			return Integer.toString(0);
+		}
 	}
 	
-	public void updateAvailableMove(HantoCoordinateImpl to){
-		
-	}
-	
-	//check if one side has win the game, change the gameOver and winSide flag when someone win the game
-	// winSide = 1 when blue wins and winSide = 2 when red wins
+
+	/**
+	 * helper function
+	 * check if one side has win the game
+	 * change the gameOver and winSide flag when someone win the game
+	 * @throws HantoException
+	 */
 	public void checkGameOver() throws HantoException{
-		
-		boolean winflag = true;		
+		//check if the blue butterfly is surrounded
+		boolean winflag = true;
 		if(blueButterflyHex != null){
 			for(Direction d: Direction.values()){
 				if(!hexTaken.containsKey(blueButterflyHex.getNeighbor(d).hashCode())){
-					winflag = false;
-					break;
-				}
-			}			
-			if(winflag){
-				blueWin = true;
-				gameOver = true;
-			}
-		}
-				
-		winflag = true;		
-		if(redButterflyHex != null){
-			for(Direction d: Direction.values()){
-				if(!hexTaken.containsKey(redButterflyHex.getNeighbor(d).hashCode())){
 					winflag = false;
 					break;
 				}
@@ -190,11 +208,21 @@ public class BetaHantoGame implements HantoGame
 				gameOver = true;
 			}
 		}
+		//check if the red butterfly is surrounded	
+		winflag = true;
+		if(redButterflyHex != null){
+			for(Direction d: Direction.values()){
+				if(!hexTaken.containsKey(redButterflyHex.getNeighbor(d).hashCode())){
+					winflag = false;
+					break;
+				}
+			}
+			if(winflag){
+				blueWin = true;
+				gameOver = true;
+			}
+		}
 	}
 	
-
-	public static void main(String[] args) {
-		
-	}
 
 }

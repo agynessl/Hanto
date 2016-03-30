@@ -12,13 +12,12 @@ package hanto.common;
  * The HantoCoordinate identifies a specific hex on the Hanto board.
  * 
  * @author gpollice
- * @see <a
- *      href="http://www.vbforums.com/showthread.php?663283-Hexagonal-coordinate-system">
+ * @see <a href=
+ *      "http://www.vbforums.com/showthread.php?663283-Hexagonal-coordinate-system">
  *      Hexagonal Coordinate System</a>
  * @version Jan 12, 2013
  */
-public interface HantoCoordinate
-{
+public interface HantoCoordinate {
 	/**
 	 * @return the X-coordinate
 	 */

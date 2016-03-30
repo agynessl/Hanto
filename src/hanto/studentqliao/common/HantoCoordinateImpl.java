@@ -12,18 +12,18 @@
 
 package hanto.studentqliao.common;
 
-import java.util.ArrayList;
+
 
 import hanto.common.HantoCoordinate;
 import hanto.common.HantoException;
 
 /**
- * The implementation for my version of Hanto.
- * @version Mar 2, 2016
+ * The implementation for Beta Hanto HantoCoordinate
+ * @version Mar 29, 2016
  */
 public class HantoCoordinateImpl implements HantoCoordinate
 {
-	final private int x, y;
+	private final int x, y;
 	
 	/**
 	 * The only constructor.
@@ -104,18 +104,42 @@ public class HantoCoordinateImpl implements HantoCoordinate
 		return true;
 	}
 
+	/**
+	 * return the neighbor of this coordinate in the specified direction
+	 * @param direction
+	 * @return HantoCoordinateImpl
+	 * @throws HantoException
+	 */
 	public HantoCoordinateImpl getNeighbor(Direction direction) throws HantoException{
 		int outx = 0, outy = 0;
 		switch(direction){
-		case North: outx = this.x; outy = this.y + 1; break;
-		case NorthWest: outx = this.x + 1; outy = this.y; break;
-		case SouthWest: outx = this.x + 1; outy = this.y - 1; break;
-		case South: outx = this.x; outy = this.y - 1; break;
-		case SouthEast: outx = this.x - 1; outy = this.y; break;
-		case NorthEast: outx = this.x - 1; outy = this.y + 1; break;
+		case North: 
+			outx = x;
+			outy = y + 1;
+		break;
+		case NorthWest: 
+			outx = x + 1;
+			outy = y;
+		break;
+		case SouthWest: 
+			outx = x + 1;
+			outy = y - 1;
+		break;
+		case South: 
+			outx = x;
+			outy = y - 1;
+		break;
+		case SouthEast: 
+			outx = x - 1;
+			outy = y;
+		break;
+		case NorthEast: 
+			outx = x - 1;
+			outy = y + 1;
+		break;
 		default: throw new HantoException("Enumeration reached the end");
 		}
-		return new HantoCoordinateImpl(outx,outy);
+		return new HantoCoordinateImpl(outx, outy);
 	}
 
 }

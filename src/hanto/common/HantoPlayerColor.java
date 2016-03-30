@@ -15,7 +15,6 @@ package hanto.common;
  * 
  * @version Jan 12, 2013
  */
-public enum HantoPlayerColor
-{
+public enum HantoPlayerColor {
 	BLUE, RED;
 }

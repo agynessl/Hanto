@@ -11,15 +11,16 @@
 package hanto.studentqliao;
 
 import hanto.common.*;
-import hanto.studentqliao.alpha.AlphaHantoGame;
+
 import hanto.studentqliao.beta.BetaHantoGame;
 
 /**
  * This is a singleton class that provides a factory to create an instance of any version
  * of a Hanto game.
+ * make changes to the makeHantoGame because no AlphaHantoGame constructor exist
  * 
  * @author gpollice
- * @version Feb 5, 2013
+ * @version Mar 29, 2013
  */
 public class HantoGameFactory
 {
@@ -58,15 +59,19 @@ public class HantoGameFactory
 	 * @param movesFirst the player color that moves first
 	 * @return the game instance
 	 */
-	public  HantoGame makeHantoGame(HantoGameID gameId, HantoPlayerColor movesFirst) {
+	public HantoGame makeHantoGame(HantoGameID gameId, HantoPlayerColor movesFirst) {
 		HantoGame game = null;
 		switch (gameId) {
+		/**
 			case ALPHA_HANTO:
 				game = new AlphaHantoGame();
 				break;
+		*/
 			case BETA_HANTO:
-				// TBD: create the instance of a BetaHantoGame
+				game = new BetaHantoGame();
 				break;
+		default:
+			break;
 		}
 		return game;
 	}

@@ -13,6 +13,7 @@ package hanto.studentqliao;
 import hanto.common.*;
 
 import hanto.studentqliao.beta.BetaHantoGame;
+import hanto.studentqliao.gamma.GammaHantoGame; 
 
 /**
  * This is a singleton class that provides a factory to create an instance of any version
@@ -69,6 +70,10 @@ public class HantoGameFactory
 		*/
 			case BETA_HANTO:
 				game = new BetaHantoGame();
+				break;
+				
+			case GAMMA_HANTO:
+				game = new GammaHantoGame(HantoPlayerColor.BLUE);
 				break;
 		default:
 			break;

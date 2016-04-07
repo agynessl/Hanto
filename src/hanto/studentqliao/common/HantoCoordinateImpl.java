@@ -14,6 +14,9 @@ package hanto.studentqliao.common;
 
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import hanto.common.HantoCoordinate;
 import hanto.common.HantoException;
 
@@ -110,7 +113,7 @@ public class HantoCoordinateImpl implements HantoCoordinate
 	 * @return HantoCoordinateImpl
 	 * @throws HantoException
 	 */
-	public HantoCoordinateImpl getNeighbor(Direction direction) throws HantoException{
+	public HantoCoordinateImpl getNeighbor(Direction direction){
 		int outx = 0, outy = 0;
 		switch(direction){
 		case North: 
@@ -137,9 +140,23 @@ public class HantoCoordinateImpl implements HantoCoordinate
 			outx = x - 1;
 			outy = y + 1;
 		break;
-		default: throw new HantoException("Enumeration reached the end");
+		
 		}
 		return new HantoCoordinateImpl(outx, outy);
+	}
+	
+	/**
+	 * return the neighbors of this coordinate in the specified direction
+	 * @param direction
+	 * @return HantoCoordinateImpl
+	 * @throws HantoException
+	 */
+	public ArrayList<HantoCoordinateImpl> getNeighbors(){
+		ArrayList<HantoCoordinateImpl> neighbors = new ArrayList<HantoCoordinateImpl>();
+		for(Direction d: Direction.values()){
+			neighbors.add(getNeighbor(d));
+		}
+		return neighbors;
 	}
 
 }

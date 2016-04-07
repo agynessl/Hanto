@@ -46,8 +46,7 @@ public class GammaHantoGame implements HantoGame {
 	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from, HantoCoordinate to)
 			throws HantoException {
 		//game end check
-		checkGameEnd();
-		if(pieceType != BUTTERFLY) { checkButterflyMovesByFourthMove(); }
+		checkGameEnd();		
 		//move check
 		validateMove(pieceType,from,to);
 		//make the move
@@ -93,18 +92,54 @@ public class GammaHantoGame implements HantoGame {
 	 * @param from
 	 * @param to
 	 */
-	private void validateMove(HantoPieceType pieceType, HantoCoordinate from, HantoCoordinate to){
-		MoveValidator validator = getMoveValidator(pieceType);
-		if( validator.canMove(board, from, to, onMove, pieceType) ){
-			if(from == null){
-				board.putPieceAt(new HantoPieceImpl(onMove, pieceType), to);
-			}
-			else{
-				board.movePiece(from,to);
-			}
+	private void validateMove(HantoPieceType pieceType, HantoCoordinate from, HantoCoordinate to) throws HantoException{
+		if(pieceType != BUTTERFLY) {
+			checkButterflyMovesByFourthMove(); 
 		}
+		if(firstMove){
+			firstMoveValidator(pieceType, from, to);
+		}
+		else{
+			MoveValidator validator = getMoveValidator(pieceType);
+			validator.canMove(board, from, to, onMove, pieceType);
+		}
+
 	}
 	
+	private void firstMoveValidator(HantoPieceType pieceType, HantoCoordinate from, HantoCoordinate to) throws HantoException{
+		pieceTypeChecker(pieceType);
+		
+		switch(onMove){
+		case BLUE:
+			if(from != null || to.getX() != 0 || to.getY() != 0){
+				throw new HantoException("First move should be put on origin");
+			}
+			break;
+		case RED:
+			HantoCoordinateImpl origin = new HantoCoordinateImpl(0,0);
+			HantoCoordinateImpl dest = new HantoCoordinateImpl(to);
+			if(from != null || !(origin.getNeighbors().contains(dest))){
+				throw new HantoException("Second move should be put adjacent to origin");
+			}
+			firstMove = false;
+			break;
+		}
+		
+	}
+	
+	private void pieceTypeChecker(HantoPieceType type) throws HantoException{
+		if(type == null){
+			throw new HantoException("Need a valid piece type");
+		}
+		switch(type){
+		case BUTTERFLY:
+			return;
+		case SPARROW:
+			return;
+			default:
+				throw new HantoException("Gamma Hanto only use Butterfly and Sparrow");
+		}
+	}
 	
 	private void doMove(HantoPieceType pieceType, HantoCoordinate from, HantoCoordinate to){
 		if(from == null){

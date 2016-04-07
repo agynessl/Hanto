@@ -2,7 +2,9 @@ package hanto.studentqliao.common;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Set;
 
 import hanto.common.HantoCoordinate;
 import hanto.common.HantoPiece;
@@ -76,6 +78,24 @@ public class HantoBoard{
 	}
 	
 	/**
+	 * 
+	 * @param coor
+	 * @return
+	 */
+	public ArrayList<HantoCoordinateImpl> getOccupiedNeighbors(HantoCoordinateImpl coor){
+		ArrayList<HantoCoordinateImpl> neighbors = new ArrayList<HantoCoordinateImpl>();
+		ArrayList<HantoCoordinateImpl> neighborsCoor = coor.getNeighbors();
+		
+		for(HantoCoordinateImpl c: neighborsCoor){
+			if(boardpieces.containsKey(c)){
+				neighbors.add(c);
+			}
+		}
+		
+		return neighbors;
+	}
+	
+	/**
 	 * get the board
 	 * @return
 	 */
@@ -139,19 +159,21 @@ public class HantoBoard{
 	 * check if the board pieces is connected
 	 * @return
 	 */
-	public boolean isConnected(){
+	public boolean isConnected(HantoCoordinateImpl coor){
+		//TODO: is connected how to check if the 
+		Set<HantoCoordinateImpl> coorSet = boardpieces.keySet();
+		if(coorSet.contains(coor)){
+			Set<HantoCoordinateImpl> visitedCoor = new HashSet<HantoCoordinateImpl>();
+			
+			for(HantoCoordinateImpl c: visitedCoor){
+				visitedCoor.addAll(getOccupiedNeighbors(c));
+			}
+			return visitedCoor.size() == boardpieces.size();
+		}
+		
 		return false;
 	}
 	
-	/**
-	 * check if there's right adjacency for the coordinates
-	 * @param to
-	 * @return
-	 */
-	public boolean checkAdjacency(HantoCoordinate to){
-		//check if it is only adjacent to the same color
-		return false;
-	}
 	
 	/**
 	 * check if a coordinate is empty

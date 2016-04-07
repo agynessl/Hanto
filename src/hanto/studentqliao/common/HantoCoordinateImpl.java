@@ -158,5 +158,12 @@ public class HantoCoordinateImpl implements HantoCoordinate
 		}
 		return neighbors;
 	}
+	
+	public int getDistance(HantoCoordinate coor){
+		int z1 = 0 - x - y;
+		int z2 = 0 - coor.getX() - coor.getY();
+
+		return (Math.abs(x - coor.getX()) + Math.abs(y - coor.getY()) + Math.abs(z1 - z2)) / 2;
+	}
 
 }

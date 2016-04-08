@@ -142,6 +142,21 @@ public class HantoBoard{
 		return boardpieces;
 	}
 	
+	/**
+	 * get the counter
+	 * @param color
+	
+	 * @return the counter of hanto pieces in the board */
+	public Map<HantoPieceType,Integer> getCounter(HantoPlayerColor color){
+		switch(color){
+		case BLUE:
+			return bluePieceCounter;
+		case RED:
+			return redPieceCounter;
+			
+			default: return null;
+		}
+	}
 	
 	/** 
 	 * put piece in both the board and the counter
@@ -152,10 +167,20 @@ public class HantoBoard{
 		boardpieces.put(new HantoCoordinateImpl(coor), piece);
 		switch(piece.getColor()){
 		case BLUE:
-			bluePieceCounter.replace(piece.getType(), getPieceCount(piece.getType(), HantoPlayerColor.BLUE) + 1);
+			if(!bluePieceCounter.containsKey(piece.getType())){
+				bluePieceCounter.put(piece.getType(), 1);
+			}
+			else{
+				bluePieceCounter.replace(piece.getType(), getPieceCount(piece.getType(), HantoPlayerColor.BLUE) + 1);
+			}
 			break;
 		case RED:
-			redPieceCounter.replace(piece.getType(), getPieceCount(piece.getType(), HantoPlayerColor.RED) + 1);
+			if(!redPieceCounter.containsKey(piece.getType())){
+				redPieceCounter.put(piece.getType(), 1);
+			}
+			else{
+				redPieceCounter.replace(piece.getType(), getPieceCount(piece.getType(), HantoPlayerColor.RED) + 1);
+			}
 			break;
 		}
 	}
@@ -189,17 +214,18 @@ public class HantoBoard{
 			
 			do{
 				size = visitedCoor.size();
-				Iterator<HantoCoordinateImpl> i = visitedCoor.iterator();
 				Set<HantoCoordinateImpl> temp = new HashSet<HantoCoordinateImpl>();
-				while(i.hasNext()){
-					HantoCoordinateImpl c = i.next();
-					temp.addAll(getOccupiedNeighbors(c));
+				synchronized(this){
+					for(HantoCoordinateImpl c: visitedCoor){
+						temp.addAll(getOccupiedNeighbors(c));
+					}
 				}
 				visitedCoor.addAll(temp);
 			}while(visitedCoor.size() > size);
+				System.out.println(visitedCoor.size() + " " + coorSet.size());
+				return visitedCoor.size() == coorSet.size();
+			}
 			
-			return visitedCoor.size() == coorSet.size();
-		}			
 		
 		return false;
 	}
@@ -209,6 +235,7 @@ public class HantoBoard{
 	 * check if a coordinate is empty
 	 * return true if empty and false if not
 	 * @param coor
+	
 	 * @return boolean
 	 */
 	public boolean checkEmpty(HantoCoordinate coor){

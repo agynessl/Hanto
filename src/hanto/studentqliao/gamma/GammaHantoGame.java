@@ -10,6 +10,7 @@ import static hanto.common.HantoPieceType.BUTTERFLY;
 import static hanto.common.HantoPieceType.SPARROW;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import hanto.common.*;
 import hanto.studentqliao.common.*;
@@ -117,7 +118,7 @@ public class GammaHantoGame implements HantoGame {
 			break;
 		case RED:
 			HantoCoordinateImpl origin = new HantoCoordinateImpl(0,0);
-			HantoCoordinateImpl dest = new HantoCoordinateImpl(to);
+			HantoCoordinateImpl dest  = new HantoCoordinateImpl(to);
 			if(from != null || !(origin.getNeighbors().contains(dest))){
 				throw new HantoException("Second move should be put adjacent to origin");
 			}
@@ -141,7 +142,7 @@ public class GammaHantoGame implements HantoGame {
 		}
 	}
 	
-	private void doMove(HantoPieceType pieceType, HantoCoordinate from, HantoCoordinate to){
+	private void doMove(HantoPieceType pieceType, HantoCoordinate from, HantoCoordinate to) throws HantoException{
 		if(from == null){
 			HantoPiece piece = new HantoPieceImpl(onMove, pieceType);
 			board.putPieceAt(piece,to);
@@ -158,15 +159,13 @@ public class GammaHantoGame implements HantoGame {
 	 * 
 	 */
 	private void incrementMove(){
-		if(!onMove.equals(firstMove)){
-			moveCounter++;
-		}
 		switch(onMove){
 		case BLUE:
 			onMove = HantoPlayerColor.RED;
 			break;
 		case RED:
 			onMove = HantoPlayerColor.BLUE;
+			moveCounter++;
 			break;
 		}
 	}
@@ -238,7 +237,13 @@ public class GammaHantoGame implements HantoGame {
 	@Override
 	public String getPrintableBoard() {
 		// TODO Auto-generated method stub
-		return null;
+		Hashtable<HantoCoordinateImpl, HantoPiece> temp = board.getBoard();
+		String s = "";
+		for(HantoCoordinateImpl c: temp.keySet()){
+			s = s + "(" + c.getX() + ", " + c.getY() + ")" + temp.get(c).getColor() + " " + temp.get(c).getType() + "\n";
+		}
+		System.out.println(s);
+		return s;
 	}
 
 }

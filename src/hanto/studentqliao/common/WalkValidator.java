@@ -21,7 +21,7 @@ public class WalkValidator extends MoveValidator{
 		
 		HantoCoordinateImpl dest = new HantoCoordinateImpl(to);
 		if(from == null){
-			checkPutPiece(board,dest,onMove);
+			checkPutPiece(board,dest,onMove,type);
 		}
 		else{
 			HantoCoordinateImpl origin = new HantoCoordinateImpl(from);
@@ -45,12 +45,20 @@ public class WalkValidator extends MoveValidator{
 	}
 	
 	public void checkWalk(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to, HantoPlayerColor onMove,
-			HantoPieceType type) throws HantoException{
-		
+			HantoPieceType type) throws HantoException{	
+		checkButterflyPlayed(board,onMove,type);
 		checkEmptyDestination(board,to);
-		checkConnected(board,from,to);
+		checkPieceOnBoard(board,from,onMove,type);
+		checkMovable(board,from,to);
 		checkDistance(from,to);
+		checkConnected(board,from,to);
 		
+	}
+	
+	public void checkButterflyPlayed(HantoBoard board, HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
+		if(board.getPieceCount(HantoPieceType.BUTTERFLY,onMove) == 0){
+			throw new HantoException("Please play butterfly before move the piece");
+		}	
 	}
 	
 	public void checkDistance(HantoCoordinateImpl from, HantoCoordinateImpl to)throws HantoException{
@@ -59,8 +67,15 @@ public class WalkValidator extends MoveValidator{
 		}
 	}
 	
+	public void checkPieceOnBoard(HantoBoard board, HantoCoordinateImpl from,HantoPlayerColor onMove,
+			HantoPieceType type) throws HantoException{
+		if(board.getPieceAt(from) == null || board.getPieceAt(from).getColor() != onMove || board.getPieceAt(from).getType() != type){
+			throw new HantoException ("no such piece on the given from coordinate");
+		}
+	}
+	
 
-	public void checkMovale(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to)throws HantoException{
+	public void checkMovable(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to)throws HantoException{
 		ArrayList<HantoCoordinateImpl> n1 = from.getNeighbors();
 		ArrayList<HantoCoordinateImpl> n2 = to.getNeighbors();
 		ArrayList<HantoCoordinateImpl> common = new ArrayList <HantoCoordinateImpl> ();

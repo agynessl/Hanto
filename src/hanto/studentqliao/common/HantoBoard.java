@@ -7,6 +7,7 @@ import java.util.Hashtable;
 import java.util.Set;
 
 import hanto.common.HantoCoordinate;
+import hanto.common.HantoException;
 import hanto.common.HantoPiece;
 import hanto.common.HantoPieceType;
 import hanto.common.HantoPlayerColor;
@@ -20,6 +21,10 @@ public class HantoBoard{
 	
 	public HantoBoard(){
 		
+		for(HantoPieceType type: HantoPieceType.values()){
+			redPieceCounter.put(type, 0);
+			bluePieceCounter.put(type, 0);
+		}
 	}
 	
 	/**
@@ -27,17 +32,23 @@ public class HantoBoard{
 	 * @param board
 	 */
 	public HantoBoard(HantoBoard board){
-		boardpieces = board.getBoard();
-		bluePieceCounter = board.getCounter(HantoPlayerColor.BLUE);
-		redPieceCounter = board.getCounter(HantoPlayerColor.RED);
+		boardpieces = new Hashtable<HantoCoordinateImpl, HantoPiece>(board.boardpieces);
+		for(HantoPieceType type: HantoPieceType.values()){
+			redPieceCounter.put(type, board.getPieceCount(type, HantoPlayerColor.RED));
+			bluePieceCounter.put(type, board.getPieceCount(type, HantoPlayerColor.BLUE));
+		}
 	}
 	
 	/**
 	 * get the piece at specific coordinate
 	 * @param coor
 	 * @return
+	 * @throws HantoException 
 	 */
 	public HantoPiece getPieceAt(HantoCoordinate coor){
+		if( boardpieces.get(new HantoCoordinateImpl(coor)) == null){
+			return null;
+		}
 		return boardpieces.get(new HantoCoordinateImpl(coor));
 	}
 	
@@ -53,11 +64,11 @@ public class HantoBoard{
 			return bluePieceCounter.get(type);
 		case RED:
 			return redPieceCounter.get(type);
-			
-			default: return 0;
 		}
+		return 0;
 			 
 	}
+
 	
 	/**
 	 * 
@@ -100,6 +111,12 @@ public class HantoBoard{
 	 * @return
 	 */
 	public Hashtable<HantoCoordinateImpl, HantoPiece> getBoard(){
+		Hashtable<HantoCoordinateImpl, HantoPiece> temp = boardpieces;
+		String s = "";
+		for(HantoCoordinateImpl c: temp.keySet()){
+			s = s + "(" + c.getX() + ", " + c.getY() + ")" + temp.get(c).getColor() + " " + temp.get(c).getType() + "\n";
+		}
+		System.out.println(s);
 		return boardpieces;
 	}
 	
@@ -132,15 +149,17 @@ public class HantoBoard{
 				bluePieceCounter.put(piece.getType(), 1);
 			}
 			else{
-				bluePieceCounter.replace(piece.getType(), getPieceCount(piece.getType(), HantoPlayerColor.BLUE));
+				bluePieceCounter.replace(piece.getType(), getPieceCount(piece.getType(), HantoPlayerColor.BLUE) + 1);
 			}
+			break;
 		case RED:
 			if(!redPieceCounter.containsKey(piece.getType())){
 				redPieceCounter.put(piece.getType(), 1);
 			}
 			else{
-				redPieceCounter.replace(piece.getType(), getPieceCount(piece.getType(), HantoPlayerColor.RED));
+				redPieceCounter.replace(piece.getType(), getPieceCount(piece.getType(), HantoPlayerColor.RED) + 1);
 			}
+			break;
 		}
 	}
 	
@@ -148,11 +167,14 @@ public class HantoBoard{
 	 * move piece from one coordinate to another
 	 * @param from
 	 * @param to
+	 * @throws HantoException 
 	 */
-	public void movePiece(HantoCoordinate from, HantoCoordinate to){
-		HantoPiece move = boardpieces.get(from);
-		boardpieces.put(new HantoCoordinateImpl(to), move);
-		boardpieces.remove(new HantoCoordinateImpl(from));
+	public void movePiece(HantoCoordinate from, HantoCoordinate to) throws HantoException {
+		HantoCoordinateImpl origin = new HantoCoordinateImpl(from);
+		HantoCoordinateImpl dest = new HantoCoordinateImpl(to);
+		HantoPiece moveable = getPieceAt(origin);
+		boardpieces.put(dest, moveable);
+		boardpieces.remove(origin);
 	}
 	
 	/**
@@ -164,12 +186,21 @@ public class HantoBoard{
 		Set<HantoCoordinateImpl> coorSet = boardpieces.keySet();
 		if(coorSet.contains(coor)){
 			Set<HantoCoordinateImpl> visitedCoor = new HashSet<HantoCoordinateImpl>();
+			visitedCoor.add(coor);
+			int size = 0;
 			
-			for(HantoCoordinateImpl c: visitedCoor){
-				visitedCoor.addAll(getOccupiedNeighbors(c));
+			do{
+				size = visitedCoor.size();
+				synchronized(this){
+					for(HantoCoordinateImpl c: visitedCoor){
+						visitedCoor.addAll(getOccupiedNeighbors(c));
+					}
+				}
+			}while(visitedCoor.size() > size);
+				System.out.println(visitedCoor.size() + " " + coorSet.size());
+				return visitedCoor.size() == coorSet.size();
 			}
-			return visitedCoor.size() == boardpieces.size();
-		}
+			
 		
 		return false;
 	}
@@ -177,11 +208,12 @@ public class HantoBoard{
 	
 	/**
 	 * check if a coordinate is empty
+	 * return true if empty and false if not
 	 * @param coor
 	 * @return
 	 */
 	public boolean checkEmpty(HantoCoordinate coor){
-		return boardpieces.containsKey(new HantoCoordinateImpl(coor));
+		return !(boardpieces.containsKey(new HantoCoordinateImpl(coor)));
 	}
 	
 }

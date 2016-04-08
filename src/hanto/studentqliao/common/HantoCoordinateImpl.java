@@ -75,11 +75,7 @@ public class HantoCoordinateImpl implements HantoCoordinate
 	@Override
 	public int hashCode()
 	{
-		final int prime = 31;
-		int result = 17;
-		result = prime * result + x;
-		result = prime * result + y;
-		return result;
+		return x*37+ y;
 	}
 
 	/*
@@ -88,23 +84,12 @@ public class HantoCoordinateImpl implements HantoCoordinate
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (this == obj) {
-			return true;
+		if(obj instanceof HantoCoordinate){
+			return x == ((HantoCoordinate)obj).getX() && y == ((HantoCoordinate)obj).getY();
 		}
-		if (obj == null) {
+		else{
 			return false;
 		}
-		if (!(obj instanceof HantoCoordinateImpl)) {
-			return false;
-		}
-		final HantoCoordinateImpl other = (HantoCoordinateImpl) obj;
-		if (x != other.x) {
-			return false;
-		}
-		if (y != other.y) {
-			return false;
-		}
-		return true;
 	}
 
 	/**

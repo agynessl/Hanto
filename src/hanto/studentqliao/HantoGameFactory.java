@@ -73,7 +73,7 @@ public class HantoGameFactory
 				break;
 				
 			case GAMMA_HANTO:
-				game = new GammaHantoGame(HantoPlayerColor.BLUE);
+				game = new GammaHantoGame(movesFirst);
 				break;
 		default:
 			break;

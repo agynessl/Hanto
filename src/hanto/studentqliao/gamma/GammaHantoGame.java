@@ -1,20 +1,33 @@
+/*******************************************************************************
+ * This files was developed for CS4233: Object-Oriented Analysis & Design.
+ * The course was taken at Worcester Polytechnic Institute.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Copyright ©2015 Qiaoyu Liao
+ *******************************************************************************/
 package hanto.studentqliao.gamma;
 
 import static hanto.common.HantoPlayerColor.BLUE;
-import static hanto.common.HantoPlayerColor.RED;
 import static hanto.common.MoveResult.BLUE_WINS;
 import static hanto.common.MoveResult.DRAW;
 import static hanto.common.MoveResult.OK;
 import static hanto.common.MoveResult.RED_WINS;
 import static hanto.common.HantoPieceType.BUTTERFLY;
-import static hanto.common.HantoPieceType.SPARROW;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
+
+import java.util.Map;
 
 import hanto.common.*;
 import hanto.studentqliao.common.*;
 
+/**
+ * The implementation for Gamma Hanto Game
+ * @version April 7, 2016
+ */
 public class GammaHantoGame implements HantoGame {
 
 	private HantoBoard board;
@@ -30,7 +43,10 @@ public class GammaHantoGame implements HantoGame {
 	
 	
 	
-	
+	/**
+	 * 
+	 * @param movesFirst
+	 */
 	public GammaHantoGame(HantoPlayerColor movesFirst){
 		onMove = this.movesFirst = movesFirst;
 		board = new HantoBoard();
@@ -64,9 +80,6 @@ public class GammaHantoGame implements HantoGame {
 	 * @throws HantoException
 	 */
 	private void checkGameEnd() throws HantoException{
-		if(moveCounter >= MAX_TURN){
-			throw new HantoException("game ends");
-		}
 		if(gameOver){
 			throw new HantoException("game ends");
 		}
@@ -107,27 +120,35 @@ public class GammaHantoGame implements HantoGame {
 
 	}
 	
+	/**
+	 * 
+	 * @param pieceType
+	 * @param from
+	 * @param to
+	 * @throws HantoException
+	 */
 	private void firstMoveValidator(HantoPieceType pieceType, HantoCoordinate from, HantoCoordinate to) throws HantoException{
-		pieceTypeChecker(pieceType);
-		
-		switch(onMove){
-		case BLUE:
+		pieceTypeChecker(pieceType);		
+		if(onMove == movesFirst){
 			if(from != null || to.getX() != 0 || to.getY() != 0){
 				throw new HantoException("First move should be put on origin");
 			}
-			break;
-		case RED:
+		}
+		else{
 			HantoCoordinateImpl origin = new HantoCoordinateImpl(0,0);
 			HantoCoordinateImpl dest  = new HantoCoordinateImpl(to);
 			if(from != null || !(origin.getNeighbors().contains(dest))){
 				throw new HantoException("Second move should be put adjacent to origin");
 			}
 			firstMove = false;
-			break;
-		}
-		
+		}		
 	}
 	
+	/**
+	 * 
+	 * @param type
+	 * @throws HantoException
+	 */
 	private void pieceTypeChecker(HantoPieceType type) throws HantoException{
 		if(type == null){
 			throw new HantoException("Need a valid piece type");
@@ -142,6 +163,13 @@ public class GammaHantoGame implements HantoGame {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param pieceType
+	 * @param from
+	 * @param to
+	 * @throws HantoException
+	 */
 	private void doMove(HantoPieceType pieceType, HantoCoordinate from, HantoCoordinate to) throws HantoException{
 		if(from == null){
 			HantoPiece piece = new HantoPieceImpl(onMove, pieceType);
@@ -171,7 +199,7 @@ public class GammaHantoGame implements HantoGame {
 	}
 	
 	/**
-	 * 
+	 * check the result of the game
 	 * @return
 	 */
 	private MoveResult checkResult(){
@@ -199,8 +227,7 @@ public class GammaHantoGame implements HantoGame {
 			return (gameOver && blueWin && redWin) ? DRAW : 
 				(gameOver && blueWin) ? BLUE_WINS: 
 					(gameOver && redWin) ? RED_WINS :
-						gameOver ? DRAW:
-							OK;
+						DRAW;
 		}
 		
 		else{
@@ -225,6 +252,11 @@ public class GammaHantoGame implements HantoGame {
 		}
 	}	
 	
+	/**
+	 * 
+	 * @param type
+	 * @return
+	 */
 	private MoveValidator getMoveValidator(HantoPieceType type){
 		return walkValidator;
 	}
@@ -237,7 +269,7 @@ public class GammaHantoGame implements HantoGame {
 	@Override
 	public String getPrintableBoard() {
 		// TODO Auto-generated method stub
-		Hashtable<HantoCoordinateImpl, HantoPiece> temp = board.getBoard();
+		Map<HantoCoordinateImpl,HantoPiece> temp = board.getBoard();
 		String s = "";
 		for(HantoCoordinateImpl c: temp.keySet()){
 			s = s + "(" + c.getX() + ", " + c.getY() + ")" + temp.get(c).getColor() + " " + temp.get(c).getType() + "\n";

@@ -1,6 +1,18 @@
+/*******************************************************************************
+ * This files was developed for CS4233: Object-Oriented Analysis & Design.
+ * The course was taken at Worcester Polytechnic Institute.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Copyright ©2015 Qiaoyu Liao
+ *******************************************************************************/
 package hanto.studentqliao.common;
 
-import java.util.ArrayList;
+import java.util.List;
+
 
 import hanto.common.HantoCoordinate;
 import hanto.common.HantoException;
@@ -8,16 +20,32 @@ import hanto.common.HantoPiece;
 import hanto.common.HantoPieceType;
 import hanto.common.HantoPlayerColor;
 
+/**
+ * The implementation for Gamma Hanto abstract MoveValidator
+ * @version April 7, 2016
+ */
 public abstract class MoveValidator {
 	int MAX_BUTTERFLY = 1;
 	int MAX_SPARROW = 6;
 	
+	/**
+	 * @param board
+	 * @param from
+	 * @param to
+	 * @param onMove
+	 * @param type
+	 * @throws HantoException
+	 */
 	public abstract void canMove(HantoBoard board, HantoCoordinate from, HantoCoordinate to, HantoPlayerColor onMove, HantoPieceType type) throws HantoException;
 	   
-	//public abstract boolean 
-	
-	//check if the piece can be put
-	// 1.empty destination 2. butterfly by fourth 3. adjacency 4.check butterfly
+
+	/**
+	 * @param board
+	 * @param to
+	 * @param onMove
+	 * @param type
+	 * @throws HantoException
+	 */
 	public void checkPutPiece(HantoBoard board, HantoCoordinateImpl to, HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
 		checkEmptyDestination(board,to);
 		checkAdjacency(board,to,onMove);
@@ -45,7 +73,7 @@ public abstract class MoveValidator {
 	 */
 	public void checkAdjacency(HantoBoard board, HantoCoordinateImpl to, HantoPlayerColor onMove) throws HantoException {
 		boolean sameFlag = false, oppoFlag = false;
-		ArrayList<HantoPiece> neighbors = board.getNeighborPieces(to);
+		List<HantoPiece> neighbors = board.getNeighborPieces(to);
 		for(HantoPiece p: neighbors){
 			if(p.getColor() == onMove){
 				sameFlag = true;
@@ -88,7 +116,6 @@ public abstract class MoveValidator {
 	 * @param board
 	 * @param from
 	 * @param to
-	 * @return
 	 * @throws HantoException 
 	 */
 	public void checkConnected(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to) throws HantoException{

@@ -15,13 +15,12 @@ package hanto.studentqliao.common;
 
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import hanto.common.HantoCoordinate;
-import hanto.common.HantoException;
 
 /**
- * The implementation for Beta Hanto HantoCoordinate
+ * The implementation for All Hanto HantoCoordinate
  * @version Mar 29, 2016
  */
 public class HantoCoordinateImpl implements HantoCoordinate
@@ -48,6 +47,8 @@ public class HantoCoordinateImpl implements HantoCoordinate
 		this(coordinate.getX(), coordinate.getY());
 	}
 	
+	/**
+	 */
 	public enum Direction{
 		North,
 		NorthEast,
@@ -94,10 +95,8 @@ public class HantoCoordinateImpl implements HantoCoordinate
 
 	/**
 	 * return the neighbor of this coordinate in the specified direction
-	 * @param direction
-	 * @return HantoCoordinateImpl
-	 * @throws HantoException
-	 */
+	 * @param direction	
+	 * @return HantoCoordinateImpl */
 	public HantoCoordinateImpl getNeighbor(Direction direction){
 		int outx = 0, outy = 0;
 		switch(direction){
@@ -124,26 +123,28 @@ public class HantoCoordinateImpl implements HantoCoordinate
 		case NorthEast: 
 			outx = x - 1;
 			outy = y + 1;
-		break;
-		
+		break;		
 		}
 		return new HantoCoordinateImpl(outx, outy);
 	}
 	
 	/**
 	 * return the neighbors of this coordinate in the specified direction
-	 * @param direction
 	 * @return HantoCoordinateImpl
-	 * @throws HantoException
 	 */
-	public ArrayList<HantoCoordinateImpl> getNeighbors(){
-		ArrayList<HantoCoordinateImpl> neighbors = new ArrayList<HantoCoordinateImpl>();
+	public List<HantoCoordinateImpl> getNeighbors(){
+		List<HantoCoordinateImpl> neighbors = new ArrayList<HantoCoordinateImpl>();
 		for(Direction d: Direction.values()){
 			neighbors.add(getNeighbor(d));
 		}
 		return neighbors;
 	}
 	
+	/**
+	 * Method getDistance.
+	 * @param coor HantoCoordinate
+	 * @return integer for the distance
+	 */
 	public int getDistance(HantoCoordinate coor){
 		int z1 = 0 - x - y;
 		int z2 = 0 - coor.getX() - coor.getY();

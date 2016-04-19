@@ -1,61 +1,53 @@
-/*******************************************************************************
- * This files was developed for CS4233: Object-Oriented Analysis & Design.
- * The course was taken at Worcester Polytechnic Institute.
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Copyright ©2015 Qiaoyu Liao
- *******************************************************************************/
-package hanto.studentqliao.gamma;
+package hanto.studentqliao.common;
 
+import static hanto.common.HantoPieceType.BUTTERFLY;
 import static hanto.common.HantoPlayerColor.BLUE;
 import static hanto.common.MoveResult.BLUE_WINS;
 import static hanto.common.MoveResult.DRAW;
 import static hanto.common.MoveResult.OK;
 import static hanto.common.MoveResult.RED_WINS;
-import static hanto.common.HantoPieceType.BUTTERFLY;
-
 
 import java.util.Map;
 
-import hanto.common.*;
-import hanto.studentqliao.common.*;
+import hanto.common.HantoCoordinate;
+import hanto.common.HantoException;
+import hanto.common.HantoGame;
+import hanto.common.HantoPiece;
+import hanto.common.HantoPieceType;
+import hanto.common.HantoPlayerColor;
+import hanto.common.MoveResult;
 
-/**
- * The implementation for Gamma Hanto Game
- * @version April 7, 2016
- */
-public class GammaHantoGame implements HantoGame {
+public abstract class HantoGameBase implements HantoGame {
+	protected HantoBoard board;
+	//protected MoveValidator walkValidator;
+	
+	protected int moveCounter;
+	protected boolean gameOver;
 
-	private HantoBoard board;
-	private MoveValidator walkValidator;
+	private boolean firstMove;
+	protected HantoPlayerColor onMove, movesFirst;
+	protected boolean blueWins, redWins;
+	protected int MAX_TURN;
 	
-	private int moveCounter;
-	private boolean gameOver,firstMove;
-	private HantoPlayerColor onMove, movesFirst;
-	private int MAX_TURN;
+	protected HantoCoordinateImpl blueButterflyCoor;
+	protected HantoCoordinateImpl redButterflyCoor;
 	
-	private HantoCoordinateImpl blueButterflyCoor;
-	private HantoCoordinateImpl redButterflyCoor;
-	
-	
+	protected abstract  MoveValidator getMoveValidator(HantoPieceType type);
 	
 	/**
 	 * 
 	 * @param movesFirst
 	 */
-	public GammaHantoGame(HantoPlayerColor movesFirst){
+	public HantoGameBase(HantoPlayerColor movesFirst){
 		onMove = this.movesFirst = movesFirst;
 		board = new HantoBoard();
-		moveCounter = 0;
+		moveCounter = 1;
 		gameOver = false;
-		firstMove = true;
+		setFirstMove(true);
 		blueButterflyCoor = redButterflyCoor = null;
-		walkValidator = new ButterflyValidator(HantoGameID.GAMMA_HANTO);
-		MAX_TURN = 20;
+		blueWins = redWins = false;
+		//walkValidator = new ButterflyValidator();
+		MAX_TURN = Integer.MAX_VALUE;
 	}
 	
 	
@@ -79,7 +71,7 @@ public class GammaHantoGame implements HantoGame {
 	 * 
 	 * @throws HantoException
 	 */
-	private void checkGameEnd() throws HantoException{
+	protected void checkGameEnd() throws HantoException{
 		if(gameOver){
 			throw new HantoException("game ends");
 		}
@@ -91,7 +83,7 @@ public class GammaHantoGame implements HantoGame {
 	 */
 	private void checkButterflyMovesByFourthMove() throws HantoException
 	{
-		if (moveCounter == 3) {
+		if (moveCounter == 4) {
 			final boolean butterflyUsed = onMove == BLUE ? (blueButterflyCoor != null)
 					: (redButterflyCoor != null);
 			if (!butterflyUsed) {
@@ -106,7 +98,8 @@ public class GammaHantoGame implements HantoGame {
 	 * @param from
 	 * @param to
 	 */
-	private void validateMove(HantoPieceType pieceType, HantoCoordinate from, HantoCoordinate to) throws HantoException{
+	protected void validateMove(HantoPieceType pieceType, HantoCoordinate from, HantoCoordinate to) throws HantoException{
+		
 		if(to == null){
 			throw new HantoException("need a valid destination for the piece");
 		}
@@ -114,15 +107,18 @@ public class GammaHantoGame implements HantoGame {
 		if(pieceType == null){
 			throw new HantoException("need a valid piece type");
 		}
+		
 		if(pieceType != BUTTERFLY) {
 			checkButterflyMovesByFourthMove(); 
 		}
-		if(firstMove){
+		if(isFirstMove()){
 			firstMoveValidator(pieceType, from, to);
 		}
 		else{
-			pieceTypeChecker(pieceType);
 			MoveValidator validator = getMoveValidator(pieceType);
+			if(validator == null){
+				throw new HantoException("the piece type cannot be played");
+			}
 			validator.canMove(board, from, to, onMove, pieceType);
 		}
 
@@ -148,7 +144,6 @@ public class GammaHantoGame implements HantoGame {
 			if(from != null || !(origin.getNeighbors().contains(dest))){
 				throw new HantoException("Second move should be put adjacent to origin");
 			}
-			firstMove = false;
 		}		
 	}
 	
@@ -157,6 +152,8 @@ public class GammaHantoGame implements HantoGame {
 	 * @param type
 	 * @throws HantoException
 	 */
+	
+
 	private void pieceTypeChecker(HantoPieceType type) throws HantoException{
 		if(type == null){
 			throw new HantoException("Need a valid piece type");
@@ -165,6 +162,8 @@ public class GammaHantoGame implements HantoGame {
 		case BUTTERFLY:
 			return;
 		case SPARROW:
+			return;
+		case CRAB:
 			return;
 			default:
 				throw new HantoException("Gamma Hanto only use Butterfly and Sparrow");
@@ -178,7 +177,7 @@ public class GammaHantoGame implements HantoGame {
 	 * @param to
 	 * @throws HantoException
 	 */
-	private void doMove(HantoPieceType pieceType, HantoCoordinate from, HantoCoordinate to) throws HantoException{
+	protected void doMove(HantoPieceType pieceType, HantoCoordinate from, HantoCoordinate to) throws HantoException{
 		if(from == null){
 			HantoPiece piece = new HantoPieceImpl(onMove, pieceType);
 			board.putPieceAt(piece,to);
@@ -194,7 +193,7 @@ public class GammaHantoGame implements HantoGame {
 	/**
 	 * 
 	 */
-	private void incrementMove(){
+	protected void incrementMove(){
 		switch(onMove){
 		case BLUE:
 			onMove = HantoPlayerColor.RED;
@@ -202,6 +201,9 @@ public class GammaHantoGame implements HantoGame {
 		case RED:
 			onMove = HantoPlayerColor.BLUE;
 			moveCounter++;
+			if(isFirstMove()){
+				setFirstMove(false);
+			}
 			break;
 		}
 	}
@@ -210,19 +212,18 @@ public class GammaHantoGame implements HantoGame {
 	 * check the result of the game
 	 * @return
 	 */
-	private MoveResult checkResult(){
-		boolean blueWin = false,redWin = false;
+	protected MoveResult checkResult(){
 		
 		if(blueButterflyCoor != null){
 			if(board.getNeighborPieces(blueButterflyCoor).size() == 6){
-				redWin = true;
+				redWins = true;
 				gameOver = true;
 			}
 		}
 		
 		if(redButterflyCoor != null){
 			if(board.getNeighborPieces(redButterflyCoor).size() == 6){
-				blueWin = true;
+				blueWins = true;
 				gameOver = true;
 			}
 		}
@@ -232,9 +233,9 @@ public class GammaHantoGame implements HantoGame {
 		}
 		
 		if(gameOver){
-			return (gameOver && blueWin && redWin) ? DRAW : 
-				(gameOver && blueWin) ? BLUE_WINS: 
-					(gameOver && redWin) ? RED_WINS :
+			return (gameOver && blueWins && redWins) ? DRAW : 
+				(gameOver && blueWins) ? BLUE_WINS: 
+					(gameOver && redWins) ? RED_WINS :
 						DRAW;
 		}
 		
@@ -265,9 +266,7 @@ public class GammaHantoGame implements HantoGame {
 	 * @param type
 	 * @return
 	 */
-	private MoveValidator getMoveValidator(HantoPieceType type){
-		return walkValidator;
-	}
+	
 	
 	@Override
 	public HantoPiece getPieceAt(HantoCoordinate where) {
@@ -285,5 +284,47 @@ public class GammaHantoGame implements HantoGame {
 		System.out.println(s);
 		return s;
 	}
+	
+	public void placeHantoPieceOnBoard(HantoPieceType pieceType, HantoPlayerColor player,
+			HantoCoordinate to) {
+		// create objects to store into the board
+		final HantoCoordinate toCoord = new HantoCoordinateImpl(to);
+		// store the coordinate if the piece is butterfly
+		if (player == HantoPlayerColor.BLUE) {
+			if (pieceType == HantoPieceType.BUTTERFLY) {
+				blueButterflyCoor = (HantoCoordinateImpl) toCoord;
+			}			
+		} else {
+			if (pieceType == HantoPieceType.BUTTERFLY) {
+				redButterflyCoor = (HantoCoordinateImpl) toCoord;
+			}			
+		}
+		board.putPieceAt(new HantoPieceImpl(player, pieceType), to);
+	}
 
+	/**
+	 * Set the turn number
+	 * 
+	 * @param num the number to set it to
+	 */
+	public void setTurnNumber(int num) {
+		moveCounter = num;
+	}
+	
+	/**
+	 * Set the current player color
+	 * 
+	 * @param Color for the current player
+	 */
+	public void setCurrentPlayerColor(HantoPlayerColor currentPlayerColor) {
+		this.onMove = currentPlayerColor;
+	}
+
+	public boolean isFirstMove() {
+		return firstMove;
+	}
+
+	public void setFirstMove(boolean firstMove) {
+		this.firstMove = firstMove;
+	}
 }

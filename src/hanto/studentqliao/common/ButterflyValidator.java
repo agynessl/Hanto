@@ -16,6 +16,7 @@ import java.util.List;
 
 import hanto.common.HantoCoordinate;
 import hanto.common.HantoException;
+import hanto.common.HantoGameID;
 import hanto.common.HantoPieceType;
 import hanto.common.HantoPlayerColor;
 
@@ -23,16 +24,17 @@ import hanto.common.HantoPlayerColor;
  * The implementation for Gamma Hanto WalkValidator
  * @version April 7, 2016
  */
-public class WalkValidator extends MoveValidator{
+public class ButterflyValidator extends MoveValidator{
+	
+	public ButterflyValidator(HantoGameID id) {
+		super(id);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public void canMove(HantoBoard board, HantoCoordinate from, HantoCoordinate to, HantoPlayerColor onMove,
 			HantoPieceType type) throws HantoException{
-		pieceTypeChecker(type);
-		if(to == null){
-			throw new HantoException("need a valid destination for the piece");
-		}
-		
+		//pieceTypeChecker(type);
 		HantoCoordinateImpl dest = new HantoCoordinateImpl(to);
 		if(from == null){
 			checkPutPiece(board,dest,onMove,type);
@@ -49,6 +51,7 @@ public class WalkValidator extends MoveValidator{
 	 * @param type
 	 * @throws HantoException
 	 */
+	/**
 	private void pieceTypeChecker(HantoPieceType type) throws HantoException{	
 		if(type == null){
 			throw new HantoException("Need a valid piece type");
@@ -62,6 +65,7 @@ public class WalkValidator extends MoveValidator{
 				throw new HantoException("Gamma Hanto only use Butterfly and Sparrow");
 		}
 	}
+	*/
 	
 	/**
 	 * 

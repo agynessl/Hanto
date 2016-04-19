@@ -606,8 +606,7 @@ public class BetaHantoMasterTest
 	{
 		final HantoCoordinateImpl coor = new HantoCoordinateImpl(makeCoordinate(0, 0));
 		final HantoCoordinate coor2 = makeCoordinate(0, 0);
-		assertTrue(coor.equals(coor));
-		assertFalse(coor.equals(coor2));
+		assertTrue(coor.equals(coor2));
 	}
 	
 	/**

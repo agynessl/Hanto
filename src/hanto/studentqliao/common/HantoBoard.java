@@ -129,6 +129,26 @@ public class HantoBoard{
 	}
 	
 	/**
+	 * get the occupied neighbors coordinates
+	 * @param coor
+	
+	 * @return get the neighbor coordinate that is occupied */
+	public List<HantoCoordinateImpl> getEmptyNeighbors(HantoCoordinateImpl coor){
+		List<HantoCoordinateImpl> neighbors = new ArrayList<HantoCoordinateImpl>();
+		List<HantoCoordinateImpl> neighborsCoor = coor.getNeighbors();
+		
+		Iterator<HantoCoordinateImpl> i = neighborsCoor.iterator();
+		while(i.hasNext()){
+			HantoCoordinateImpl c = i.next();
+			if(!boardpieces.containsKey(c)){
+				neighbors.add(c);
+			}
+		}
+		
+		return neighbors;
+	}
+	
+	/**
 	 * get the board
 	 * @return the map of the board
 	 */

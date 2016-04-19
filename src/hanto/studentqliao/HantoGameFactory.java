@@ -13,6 +13,7 @@ package hanto.studentqliao;
 import hanto.common.*;
 
 import hanto.studentqliao.beta.BetaHantoGame;
+import hanto.studentqliao.delta.DeltaHantoGame;
 import hanto.studentqliao.gamma.GammaHantoGame; 
 
 /**
@@ -74,6 +75,10 @@ public class HantoGameFactory
 				
 			case GAMMA_HANTO:
 				game = new GammaHantoGame(movesFirst);
+				break;
+				
+			case DELTA_HANTO:
+				game = new DeltaHantoGame(movesFirst);
 				break;
 		default:
 			break;

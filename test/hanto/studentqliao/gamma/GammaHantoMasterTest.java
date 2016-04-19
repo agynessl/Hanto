@@ -799,11 +799,9 @@ public class GammaHantoMasterTest
 			game.makeMove(SPARROW, 	null, makeCoordinate(5, 0));
 			game.makeMove(SPARROW, null, makeCoordinate(-5, 0));//b5
 			game.makeMove(SPARROW, 	null, makeCoordinate(6, 0));
-			game.makeMove(SPARROW, null, makeCoordinate(-6, 0));//b6
-			game.makeMove(SPARROW, 	null, makeCoordinate(7, 0));
 			
 			try{
-				game.makeMove(SPARROW, null, makeCoordinate(-7, 0));
+				game.makeMove(SPARROW, null, makeCoordinate(-6, 0));
 			}
 			catch(Throwable t){
 				assertSame(HantoException.class, t.getClass());
@@ -999,6 +997,7 @@ public class GammaHantoMasterTest
 		{
 			game.makeMove(BUTTERFLY, null, makeCoordinate(0, 0));
 	        game.makeMove(BUTTERFLY, null, makeCoordinate(1, 0));
+	    
 	        
 	        try{
 	        	game.makeMove(SPARROW, null, null);
@@ -1006,6 +1005,7 @@ public class GammaHantoMasterTest
 	        catch(Throwable t){
 				assertSame(HantoException.class, t.getClass());
 			}
+			
 		}
 		
 		/**

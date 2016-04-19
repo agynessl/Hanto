@@ -16,6 +16,7 @@ import java.util.List;
 
 import hanto.common.HantoCoordinate;
 import hanto.common.HantoException;
+import hanto.common.HantoGameID;
 import hanto.common.HantoPiece;
 import hanto.common.HantoPieceType;
 import hanto.common.HantoPlayerColor;
@@ -25,9 +26,23 @@ import hanto.common.HantoPlayerColor;
  * @version April 7, 2016
  */
 public abstract class MoveValidator {
-	int MAX_BUTTERFLY = 1;
-	int MAX_SPARROW = 6;
+	protected int MAX_BUTTERFLY = 0;
+	protected int MAX_SPARROW = 0;
+	protected int MAX_CRAB = 0;
 	
+	public MoveValidator(HantoGameID id){
+		switch(id){
+		case GAMMA_HANTO:
+			MAX_BUTTERFLY = 1;
+			MAX_SPARROW = 5;
+			break;
+		case DELTA_HANTO:
+			MAX_BUTTERFLY = 1;
+			MAX_SPARROW = 4;
+			MAX_CRAB = 4;
+			break;
+		}
+	}
 	/**
 	 * @param board
 	 * @param from
@@ -104,6 +119,11 @@ public abstract class MoveValidator {
 			break;
 		case SPARROW:
 			if(board.getPieceCount(type,onMove) >= MAX_SPARROW){
+				throw new HantoException("exceed the sparroe pieces use");
+			}
+			break;
+		case CRAB:
+			if(board.getPieceCount(type,onMove) >= MAX_CRAB){
 				throw new HantoException("exceed the sparroe pieces use");
 			}
 			break;

@@ -24,7 +24,7 @@ public abstract class HantoGameBase implements HantoGame {
 	protected int moveCounter;
 	protected boolean gameOver;
 
-	private boolean firstMove;
+	protected boolean firstMove;
 	protected HantoPlayerColor onMove, movesFirst;
 	protected boolean blueWins, redWins;
 	protected int MAX_TURN;
@@ -34,6 +34,17 @@ public abstract class HantoGameBase implements HantoGame {
 	
 	protected abstract  MoveValidator getMoveValidator(HantoPieceType type);
 	
+	public HantoGameBase(){
+		onMove = this.movesFirst = BLUE;
+		board = new HantoBoard();
+		moveCounter = 1;
+		gameOver = false;
+		setFirstMove(true);
+		blueButterflyCoor = redButterflyCoor = null;
+		blueWins = redWins = false;
+		//walkValidator = new ButterflyValidator();
+		MAX_TURN = Integer.MAX_VALUE;
+	}
 	/**
 	 * 
 	 * @param movesFirst
@@ -117,7 +128,7 @@ public abstract class HantoGameBase implements HantoGame {
 		else{
 			MoveValidator validator = getMoveValidator(pieceType);
 			if(validator == null){
-				throw new HantoException("the piece type cannot be played");
+				throw new HantoException("piece type not in this game");
 			}
 			validator.canMove(board, from, to, onMove, pieceType);
 		}
@@ -228,7 +239,7 @@ public abstract class HantoGameBase implements HantoGame {
 			}
 		}
 		
-		if(moveCounter >= MAX_TURN){
+		if(moveCounter > MAX_TURN){
 			gameOver = true;
 		}
 		

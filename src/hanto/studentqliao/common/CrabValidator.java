@@ -20,13 +20,17 @@ import hanto.common.HantoPieceType;
 import hanto.common.HantoPlayerColor;
 
 /**
- * 
+ * Implementation for crab validator
  * @author Qiaoyu Liao
  * @version Apr 19, 2016
  */
 public class CrabValidator extends MoveValidator {
 	List<HantoCoordinateImpl> movable;
 	
+	/**
+	 * constructor for crab validator
+	 * @param id
+	 */
 	public CrabValidator(HantoGameID id){
 		super(id);
 		movable = new ArrayList<HantoCoordinateImpl>();
@@ -48,7 +52,7 @@ public class CrabValidator extends MoveValidator {
 	
 	
 	/**
-	 * 
+	 * check if the crab can walk three distance to the destination
 	 * @param board
 	 * @param from
 	 * @param to
@@ -56,8 +60,8 @@ public class CrabValidator extends MoveValidator {
 	 * @param type
 	 * @throws HantoException
 	 */
-	public void checkWalk(HantoBoard board, HantoCoordinateImpl from, 
-			HantoCoordinateImpl to, HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
+	public void checkWalk(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to, 
+			HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
 		int distanceCount = 1;
 		checkButterflyPlayed(board, onMove, type);
 		checkEmptyDestination(board, to);
@@ -87,15 +91,14 @@ public class CrabValidator extends MoveValidator {
 	
 	
 	/**
-	 * 
+	 * get the available coordinate for move
 	 * @param board
 	 * @param from
 	 * @param c
 	 * @return List<HantoCoordinateImpl> list of movable coordinates
-	 * @throws HantoException
 	 */
 	public List<HantoCoordinateImpl> getMovable(HantoBoard board,
-			HantoCoordinateImpl from, HantoCoordinateImpl c) throws HantoException{
+			HantoCoordinateImpl from, HantoCoordinateImpl c) {
 			final List<HantoCoordinateImpl> empty = board.getEmptyNeighbors(c);
 			
 			for(Iterator<HantoCoordinateImpl> iterator = empty.iterator(); iterator.hasNext();){

@@ -21,11 +21,15 @@ import hanto.common.HantoPieceType;
 import hanto.common.HantoPlayerColor;
 
 /**
- * The implementation for Gamma Hanto WalkValidator
- * @version April 7, 2016
+ * The implementation for ButterflyValidator
+ * @version April 19, 2016
  */
 public class ButterflyValidator extends MoveValidator{
 	
+	/**
+	 * constructor for butterflyValidator
+	 * @param id
+	 */
 	public ButterflyValidator(HantoGameID id) {
 		super(id);
 		// TODO Auto-generated constructor stub
@@ -49,7 +53,7 @@ public class ButterflyValidator extends MoveValidator{
 	
 	
 	/**
-	 * 
+	 * validate the walk
 	 * @param board
 	 * @param from
 	 * @param to
@@ -86,7 +90,7 @@ public class ButterflyValidator extends MoveValidator{
 
 	
 	/**
-	 * 
+	 * check if the piece can be moved
 	 * @param board
 	 * @param from
 	 * @param to

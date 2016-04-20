@@ -22,8 +22,8 @@ import hanto.common.HantoPieceType;
 import hanto.common.HantoPlayerColor;
 
 /**
- * The implementation for Gamma Hanto abstract MoveValidator
- * @version April 7, 2016
+ * The implementation for Hanto abstract MoveValidator
+ * @version April 19, 2016
  */
 public abstract class MoveValidator {
 	protected int MAX_BUTTERFLY = 0;
@@ -31,7 +31,7 @@ public abstract class MoveValidator {
 	protected int MAX_CRAB = 0;
 	
 	/**
-	 * 
+	 * constructor for move validator
 	 * @param id
 	 */
 	protected MoveValidator(HantoGameID id){
@@ -52,6 +52,7 @@ public abstract class MoveValidator {
 		}
 	}
 	/**
+	 * abstract canMove
 	 * @param board
 	 * @param from
 	 * @param to
@@ -64,7 +65,7 @@ public abstract class MoveValidator {
 	   
 
 	/**
-	 * 
+	 * check if the butterfly is played when moving pieces
 	 * @param board
 	 * @param onMove
 	 * @param type
@@ -72,7 +73,6 @@ public abstract class MoveValidator {
 	 */
 	public void checkButterflyPlayed(HantoBoard board, 
 			HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
-		
 		if(board.getPieceCount(HantoPieceType.BUTTERFLY, onMove) == 0){
 			throw new HantoException("Please play butterfly before move the piece");
 		}
@@ -81,7 +81,7 @@ public abstract class MoveValidator {
 	
 	
 	/**
-	 * 
+	 * check if the moving piece is on the board
 	 * @param board
 	 * @param from
 	 * @param onMove
@@ -99,6 +99,7 @@ public abstract class MoveValidator {
 	}
 
 	/**
+	 * check to put pieces
 	 * @param board
 	 * @param to
 	 * @param onMove
@@ -155,7 +156,7 @@ public abstract class MoveValidator {
 	}
 	
 	/**
-	 * 
+	 * check if the pieces reach the maximum number
 	 * @param board
 	 * @param onMove
 	 * @param type
@@ -172,12 +173,12 @@ public abstract class MoveValidator {
 			break;
 		case SPARROW:
 			if(board.getPieceCount(type, onMove) >= MAX_SPARROW){
-				throw new HantoException("exceed the sparroe pieces use");
+				throw new HantoException("exceed the sparrow pieces use");
 			}
 			break;
 		case CRAB:
 			if(board.getPieceCount(type, onMove) >= MAX_CRAB){
-				throw new HantoException("exceed the sparroe pieces use");
+				throw new HantoException("exceed the crab pieces use");
 			}
 			break;
 			default:

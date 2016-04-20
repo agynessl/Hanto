@@ -23,12 +23,16 @@ import hanto.studentqliao.common.MoveValidator;
 import hanto.studentqliao.common.SparrowValidator;
 
 /**
- * 
+ * Implementation of Delta Hanto Game
  * @author Qiaoyu Liao
  * @version Apr 19, 2016
  */
 public class DeltaHantoGame extends HantoGameBase{
 
+	/**
+	 * constructor for delta hanto
+	 * @param movesFirst
+	 */
 	public DeltaHantoGame(HantoPlayerColor movesFirst) {
 		super(movesFirst);
 		// TODO Auto-generated constructor stub
@@ -54,9 +58,12 @@ public class DeltaHantoGame extends HantoGameBase{
 	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from, HantoCoordinate to)
 			throws HantoException {
 		
+		//check resign
 		if(pieceType == null && from == null && to == null){
+			gameOver = true;
 			return onMove == HantoPlayerColor.RED ? MoveResult.BLUE_WINS : MoveResult.RED_WINS;
 		}
+		
 		//game end check
 		checkGameEnd();
 		//move check

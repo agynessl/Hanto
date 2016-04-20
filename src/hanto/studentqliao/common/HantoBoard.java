@@ -26,7 +26,7 @@ import hanto.common.HantoPieceType;
 import hanto.common.HantoPlayerColor;
 
 /**
- * The implementation for Gamma Hanto HantoBoard
+ * The implementation for Hanto HantoBoard
  * @version April 7, 2016
  */
 public class HantoBoard{
@@ -88,7 +88,7 @@ public class HantoBoard{
 			return redPieceCounter.get(type);
 			default:
 				return 0;
-		}			 
+		}
 	}
 
 	

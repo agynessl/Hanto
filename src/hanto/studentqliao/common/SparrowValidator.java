@@ -20,15 +20,18 @@ import hanto.common.HantoPieceType;
 import hanto.common.HantoPlayerColor;
 
 /**
- * 
+ * Implementation for Sparrow Validator
  * @author Qiaoyu Liao
  * @version Apr 19, 2016
  */
 public class SparrowValidator extends MoveValidator{
 
+	/**
+	 * constructor
+	 * @param id
+	 */
 	public SparrowValidator(HantoGameID id) {
 		super(id);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -47,7 +50,7 @@ public class SparrowValidator extends MoveValidator{
 	
 	
 	/**
-	 * 
+	 * check if the piece can fly
 	 * @param board
 	 * @param from
 	 * @param to
@@ -55,8 +58,8 @@ public class SparrowValidator extends MoveValidator{
 	 * @param type
 	 * @throws HantoException
 	 */
-	public void checkFly(HantoBoard board, HantoCoordinateImpl from,
-			HantoCoordinateImpl to, HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
+	public void checkFly(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to,
+			HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
 		checkButterflyPlayed(board, onMove, type);
 		checkEmptyDestination(board, to);
 		checkPieceOnBoard(board, from, onMove, type);

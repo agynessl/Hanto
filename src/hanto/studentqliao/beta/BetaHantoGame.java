@@ -32,7 +32,8 @@ public class BetaHantoGame extends HantoGameBase
 	private int MAX_BUTTERFLY = 1;
 	private int MAX_SPARROW = 5;
 
-	public BetaHantoGame(){		
+	public BetaHantoGame(HantoPlayerColor movesFirst){
+		super(movesFirst);
 		MAX_TURN = 6;
 		MAX_BUTTERFLY = 1;
 		MAX_SPARROW = 5;
@@ -67,7 +68,7 @@ public class BetaHantoGame extends HantoGameBase
 			if(validator == null){
 				throw new HantoException("piece type not in this game");
 			}
-			putValidator(pieceType,to);
+			putValidator(pieceType, to);
 		}
 
 	}
@@ -84,7 +85,8 @@ public class BetaHantoGame extends HantoGameBase
 			 throw new HantoException("the destination already has a hanto piece");
 		 }
 		// check connected
-		Collection<HantoPiece> neighborsPiece = board.getNeighborPieces(new HantoCoordinateImpl(to));
+		final Collection<HantoPiece> neighborsPiece = 
+				board.getNeighborPieces(new HantoCoordinateImpl(to));
 		
 		if(neighborsPiece.size() == 0){
 			throw new HantoException("The piece is not connected with any other pieces on the board");

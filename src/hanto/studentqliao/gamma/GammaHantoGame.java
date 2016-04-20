@@ -15,22 +15,17 @@ import hanto.common.*;
 import hanto.studentqliao.common.*;
 
 /**
- * The implementation for Gamma Hanto Game
+ * The Implementation for Gamma Hanto
  * @version April 7, 2016
  */
 public class GammaHantoGame extends HantoGameBase {
 	
 	/**
-	 * 
+	 * constructor for gamma hanto
 	 * @param movesFirst
 	 */
 	public GammaHantoGame(HantoPlayerColor movesFirst){
-		onMove = this.movesFirst = movesFirst;
-		board = new HantoBoard();
-		moveCounter = 1;
-		gameOver = false;
-		firstMove = true;
-		blueButterflyCoor = redButterflyCoor = null;
+		super(movesFirst);
 		MAX_TURN = 20;
 	}
 

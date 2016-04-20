@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * This files was developed for CS4233: Object-Oriented Analysis & Design.
+ * The course was taken at Worcester Polytechnic Institute.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 package hanto.studentqliao.delta;
 
 import static org.junit.Assert.*;
@@ -97,7 +106,7 @@ public class DeltaHantoGameTest {
 		pieces[0] = new HantoTestGame.PieceLocationPair(HantoPlayerColor.BLUE,
 				HantoPieceType.BUTTERFLY, new TestHantoCoordinate(0, 0));
 		pieces[1] = new HantoTestGame.PieceLocationPair(HantoPlayerColor.RED,
-				HantoPieceType.SPARROW, new TestHantoCoordinate(0, 1));
+				HantoPieceType.BUTTERFLY, new TestHantoCoordinate(0, 1));
 		pieces[2] = new HantoTestGame.PieceLocationPair(HantoPlayerColor.BLUE,
 				HantoPieceType.CRAB, new TestHantoCoordinate(1, 0));
 		pieces[3] = new HantoTestGame.PieceLocationPair(HantoPlayerColor.RED,
@@ -105,10 +114,10 @@ public class DeltaHantoGameTest {
 
 		game.initializeBoard(pieces);
 		game.setTurnNumber(3);
-		game.setPlayerMoving(HantoPlayerColor.BLUE);
+		game.setPlayerMoving(HantoPlayerColor.RED);
 
 		assertEquals(MoveResult.OK, game.makeMove(HantoPieceType.CRAB,
-				new TestHantoCoordinate(1, 0), new TestHantoCoordinate(1, -1)));
+				new TestHantoCoordinate(-1, 1), new TestHantoCoordinate(1, -1)));
 	}
 
 	/**

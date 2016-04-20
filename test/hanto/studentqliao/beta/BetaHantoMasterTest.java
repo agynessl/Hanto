@@ -616,13 +616,46 @@ public class BetaHantoMasterTest
 	@Test // 29
 	public void testGetPrintableBoard() throws HantoException
 	{
-		assertEquals(game.getPrintableBoard(), "0");
 		game.makeMove(SPARROW, null, makeCoordinate(0, 0));
 		game.makeMove(SPARROW, null, makeCoordinate(0, 1));
 		game.makeMove(SPARROW, null, makeCoordinate(1, 1));
 		game.makeMove(SPARROW, null, makeCoordinate(1, -1));
-		assertEquals(game.getPrintableBoard(), "4");
 	}
+	
+	/**
+	 * test null to
+	 * @throws HantoException
+	 */
+	@Test(expected=HantoException.class) // 29
+	public void testNullTo() throws HantoException
+	{
+		game.makeMove(SPARROW, null, null);
+	}
+	
+	/**
+	 * test null to
+	 * @throws HantoException
+	 */
+	@Test(expected=HantoException.class) // 29
+	public void testCrabAfterFirstMove() throws HantoException
+	{
+		game.makeMove(SPARROW, null, makeCoordinate(0, 0));
+		game.makeMove(SPARROW, null, makeCoordinate(0, 1));
+		game.makeMove(CRAB, null, makeCoordinate(0, 2));
+	}
+	
+	/**
+	 * test null to
+	 * @throws HantoException
+	 */
+	@Test(expected=HantoException.class) // 29
+	public void testNullTypeAfterFirstMove() throws HantoException
+	{
+		game.makeMove(SPARROW, null, makeCoordinate(0, 0));
+		game.makeMove(SPARROW, null, makeCoordinate(0, 1));
+		game.makeMove(null, null, makeCoordinate(0, 2));
+	}
+	
 	
 		
 	

@@ -87,6 +87,13 @@ public void setup()
 	game = factory.makeHantoGame(HantoGameID.DELTA_HANTO);
 }
 
+
+@Test
+public void getAnDeltaHantoGameFromTheFactory()
+{
+	assertTrue(game instanceof DeltaHantoGame);
+}
+
 @Test
 public void blueResignsImmediately() throws HantoException
 {
@@ -94,26 +101,6 @@ public void blueResignsImmediately() throws HantoException
 	game = HantoGameFactory.getInstance().makeHantoGame(HantoGameID.DELTA_HANTO);
 	assertEquals(RED_WINS, game.makeMove(null, null, null));
 }
-
-/**
-@Test(expected=HantoException.class)
-public void attemptToMoveAfterGameIsOver() throws HantoException
-{
-	final PieceLocationPair[] board = new PieceLocationPair[] {
-		    plPair(BLUE, BUTTERFLY, 0, 0), plPair(RED, BUTTERFLY, 0, 1),
-		    plPair(BLUE, SPARROW, -1, 0), plPair(RED, SPARROW, 1, -1),
-		    plPair(BLUE, SPARROW, -1, 1), plPair(RED, SPARROW, 0, -1),
-		    plPair(RED, CRAB, 1, 1)
-		    
-	};
-	testGame.initializeBoard(board);
-	testGame.setPlayerMoving(RED);
-	game.makeMove(CRAB, makeCoordinate(1, 1), makeCoordinate(1, 0));	// RED wins
-	game.makeMove(SPARROW, makeCoordinate(-1, 1), makeCoordinate(-1, 2));
-}
-*/
-
-
 
 @Test
 public void placeACrab() throws HantoException
@@ -163,37 +150,13 @@ public void placePieceInNonAdjacentPosition() throws HantoException
 }
 
 @Test(expected=HantoException.class)
-public void firstMoveNotAtOriing() throws HantoException
+public void firstMoveNotAtOrigin() throws HantoException
 {
 	game.makeMove(BUTTERFLY, null, makeCoordinate(-1, 0));
 }
 
 @Test(expected=HantoException.class)
-public void attemptToMoveAndDisconnect() throws HantoException
-{
-	game.makeMove(SPARROW, null, makeCoordinate(0, 0));	// Blue
-	game.makeMove(SPARROW, null, makeCoordinate(0, -1)); // Red
-	game.makeMove(SPARROW, makeCoordinate(0,0), makeCoordinate(0, 2));	// Blue
-}
-
-@Test(expected=HantoException.class)
-public void attemptToMoveOpponentPiece() throws HantoException
-{
-	game.makeMove(SPARROW, null, makeCoordinate(0, 0));	// Blue
-	game.makeMove(SPARROW, null, makeCoordinate(0, -1)); // Red
-	game.makeMove(SPARROW, makeCoordinate(0,-1), makeCoordinate(1, -1));	// Red
-}
-
-@Test(expected=HantoException.class)
-public void attemptToMoveWrongType() throws HantoException
-{
-	game.makeMove(SPARROW, null, makeCoordinate(0, 0));	// Blue
-	game.makeMove(SPARROW, null, makeCoordinate(0, -1)); // Red
-	game.makeMove(BUTTERFLY, makeCoordinate(0,0), makeCoordinate(1, -1));	// Red
-}
-
-@Test(expected=HantoException.class)
-public void attemptToPlaceTwoButterflies() throws HantoException
+public void placeTwoButterflies() throws HantoException
 {
 	game.makeMove(BUTTERFLY, null, makeCoordinate(0, 0));
 	game.makeMove(SPARROW, null, makeCoordinate(-1, 0));
@@ -201,58 +164,15 @@ public void attemptToPlaceTwoButterflies() throws HantoException
 }
 
 @Test(expected=HantoException.class)
-public void attemptToPlacePieceOnOccupiedLocation() throws HantoException
+public void placePieceOnOccupiedLocation() throws HantoException
 {
 	game.makeMove(BUTTERFLY, null, makeCoordinate(0, 0));
 	game.makeMove(SPARROW, null, makeCoordinate(0, 0));
 }
 
-@Test
-public void redSelfLoses() throws HantoException
-{
-	MoveResult mr = makeMoves(md(BUTTERFLY, 0, 0), md(BUTTERFLY, 0, 1),
-			md(SPARROW, -1, 0), md(SPARROW, 0, 2),
-			md(SPARROW, 1, -1), md(SPARROW, 1, 2),
-			md(SPARROW, 1, -1, 1, 0), md(SPARROW, -1, 2),
-			md(SPARROW, -1, 0, -1, 1), md(SPARROW, 1, 2, 1, 1));
-	assertEquals(BLUE_WINS, mr);
-}
 
 @Test
-public void blueWins() throws HantoException
-{
-	MoveResult mr = makeMoves(md(BUTTERFLY, 0, 0), md(BUTTERFLY, 0, 1),
-			md(SPARROW, -1, 0), md(SPARROW, 1, 1),
-			md(SPARROW, 1, -1), md(SPARROW, 0, 2),
-			md(SPARROW, 1, -1, 1, 0), md(SPARROW, -1, 2),
-			md(SPARROW, -1, 0, -1, 1));
-	assertEquals(BLUE_WINS, mr);
-}
-
-
-public void attemptFly() throws HantoException
-{
-	game.makeMove(SPARROW, null, makeCoordinate(0, 0));
-	game.makeMove(SPARROW, null, makeCoordinate(0, 1));
-	MoveResult result = game.makeMove(SPARROW, makeCoordinate(0, 0), makeCoordinate(1, 1));
-	assertEquals(result, MoveResult.OK);
-}
-
-
-@Test
-public void getAnDeltaHantoGameFromTheFactory()
-{
-	assertTrue(game instanceof DeltaHantoGame);
-}
-@Test
-public void blueMakesValidFirstMove() throws HantoException
-{
-	final MoveResult mr = game.makeMove(HantoPieceType.BUTTERFLY, null,
-			new TestHantoCoordinate(0, 0));
-	assertEquals(MoveResult.OK, mr);
-}
-@Test
-public void afterFirstMoveBlueButterflyIsAt0_0() throws HantoException
+public void afterFirstMoveBlueButterflyIsAtOrigin() throws HantoException
 {
 	game.makeMove(HantoPieceType.BUTTERFLY, null, new TestHantoCoordinate(0, 0));
 	final HantoPiece p = game.getPieceAt(new TestHantoCoordinate(0, 0));
@@ -278,7 +198,7 @@ public void redPlacesButterflyNextToBlueButterfly() throws HantoException
 }
 
 @Test(expected = HantoException.class)
-public void blueAttemptsToPlaceButterflyAtWrongLocation()
+public void bluePlaceButterflyAtWrongLocation()
 		throws HantoException
 {
 	game.makeMove(HantoPieceType.BUTTERFLY, null, new TestHantoCoordinate(-1, 1));
@@ -299,7 +219,7 @@ public void twoPieceOnSameCoordinate() throws HantoException{
 }
 
 @Test(expected=HantoException.class)
-public void tryToUseTooManySparrows() throws HantoException
+public void tooManySparrows() throws HantoException
 {
 	makeMoves(md(BUTTERFLY, 0, 0), md(BUTTERFLY, 0, 1), 
 			md(SPARROW, 0, -1), md(SPARROW, 0, 2),
@@ -310,7 +230,7 @@ public void tryToUseTooManySparrows() throws HantoException
 }
 
 @Test(expected=HantoException.class)
-public void tryToUseTooManyCrabs() throws HantoException
+public void tooManyCrabs() throws HantoException
 {
 	makeMoves(md(BUTTERFLY, 0, 0), md(BUTTERFLY, 0, 1), 
 			md(CRAB, 0, -1), md(CRAB, 0, 2),
@@ -337,6 +257,13 @@ public void redPlacesSparrowFirst() throws HantoException
 	assertEquals(OK, mr);
 }
 
+@Test(expected=HantoException.class)
+public void PlacePieceOnOccupiedLocation() throws HantoException
+{
+	game.makeMove(HantoPieceType.BUTTERFLY, null, makeCoordinate(0, 0));
+	game.makeMove(HantoPieceType.SPARROW, null, makeCoordinate(0, 0));
+}
+
 @Test
 public void blueMovesSparrow() throws HantoException
 {
@@ -351,6 +278,29 @@ public void blueMovesSparrow() throws HantoException
 	assertEquals(SPARROW, piece.getType());
 }
 
+@Test(expected=HantoException.class)
+public void moveAndDisconnect() throws HantoException
+{
+	game.makeMove(SPARROW, null, makeCoordinate(0, 0));	// Blue
+	game.makeMove(SPARROW, null, makeCoordinate(0, -1)); // Red
+	game.makeMove(SPARROW, makeCoordinate(0,0), makeCoordinate(0, 2));	// Blue
+}
+
+@Test(expected=HantoException.class)
+public void moveOpponentPiece() throws HantoException
+{
+	game.makeMove(SPARROW, null, makeCoordinate(0, 0));	// Blue
+	game.makeMove(SPARROW, null, makeCoordinate(0, -1)); // Red
+	game.makeMove(SPARROW, makeCoordinate(0,-1), makeCoordinate(1, -1));	// Red
+}
+
+@Test(expected=HantoException.class)
+public void moveWrongType() throws HantoException
+{
+	game.makeMove(SPARROW, null, makeCoordinate(0, 0));	// Blue
+	game.makeMove(SPARROW, null, makeCoordinate(0, -1)); // Red
+	game.makeMove(BUTTERFLY, makeCoordinate(0,0), makeCoordinate(1, -1));	// Red
+}
 
 @Test
 public void moveButterfly() throws HantoException
@@ -373,7 +323,7 @@ public void moveToDisconnectConfiguration() throws HantoException
 }
 
 @Test(expected=HantoException.class)
-public void attemptToMoveAPieceFromAnEmptyHex() throws HantoException
+public void moveAPieceFromAnEmptyHex() throws HantoException
 {
 	game.makeMove(BUTTERFLY, null, makeCoordinate(0, 0));
 	game.makeMove(BUTTERFLY, null, makeCoordinate(0, 1));
@@ -381,11 +331,33 @@ public void attemptToMoveAPieceFromAnEmptyHex() throws HantoException
 }
 
 @Test(expected=HantoException.class)
-public void attemptToMoveWrongPiece() throws HantoException
+public void moveWrongPiece() throws HantoException
 {
 	game.makeMove(BUTTERFLY, null, makeCoordinate(0, 0));
 	game.makeMove(BUTTERFLY, null, makeCoordinate(0, 1));
 	game.makeMove(SPARROW, makeCoordinate(0, 0), makeCoordinate(1, 0));
+}
+
+@Test
+public void blueWins() throws HantoException
+{
+	MoveResult mr = makeMoves(md(BUTTERFLY, 0, 0), md(BUTTERFLY, 0, 1),
+			md(SPARROW, -1, 0), md(SPARROW, 1, 1),
+			md(SPARROW, 1, -1), md(SPARROW, 0, 2),
+			md(SPARROW, 1, -1, 1, 0), md(SPARROW, -1, 2),
+			md(SPARROW, -1, 0, -1, 1));
+	assertEquals(BLUE_WINS, mr);
+}
+
+@Test
+public void redSelfLose() throws HantoException
+{
+	MoveResult mr = makeMoves(md(BUTTERFLY, 0, 0), md(BUTTERFLY, 0, 1),
+			md(SPARROW, -1, 0), md(SPARROW, 0, 2),
+			md(SPARROW, 1, -1), md(SPARROW, 1, 2),
+			md(SPARROW, 1, -1, 1, 0), md(SPARROW, -1, 2),
+			md(SPARROW, -1, 0, -1, 1), md(SPARROW, 1, 2, 1, 1));
+	assertEquals(BLUE_WINS, mr);
 }
 
 @Test
@@ -399,6 +371,26 @@ public void redResign() throws HantoException{
 	game.makeMove(BUTTERFLY, null, makeCoordinate(0, 0));
 	MoveResult result = game.makeMove(null, null, null);
 	assertEquals(result, MoveResult.BLUE_WINS);
+}
+
+/**
+ * test null to
+ * @throws HantoException
+ */
+@Test(expected=HantoException.class) 
+public void testNullTo() throws HantoException
+{
+	game.makeMove(SPARROW, null, null);
+}
+
+/**
+ * test null to
+ * @throws HantoException
+ */
+@Test(expected=HantoException.class) 
+public void testNullPieceType() throws HantoException
+{
+	game.makeMove(null, null, makeCoordinate(0, 0));
 }
 
 

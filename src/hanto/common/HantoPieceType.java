@@ -16,8 +16,8 @@ package hanto.common;
  * @version Jan 12, 2013
  */
 public enum HantoPieceType {
-	BUTTERFLY("Butterfly", "B"), CRAB("Crab", "C"), HORSE("Horse", "H"), CRANE("Crane", "N"), DOVE("Dove",
-			"D"), SPARROW("Sparrow", "S");
+	BUTTERFLY("Butterfly", "B"), CRAB("Crab", "C"), HORSE("Horse", "H"),
+	CRANE("Crane", "N"), DOVE("Dove","D"), SPARROW("Sparrow", "S");
 
 	private final String printableName;
 	private final String symbol;

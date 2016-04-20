@@ -30,8 +30,16 @@ public abstract class MoveValidator {
 	protected int MAX_SPARROW = 0;
 	protected int MAX_CRAB = 0;
 	
-	public MoveValidator(HantoGameID id){
+	/**
+	 * 
+	 * @param id
+	 */
+	protected MoveValidator(HantoGameID id){
 		switch(id){
+		case BETA_HANTO:
+			MAX_BUTTERFLY = 1;
+			MAX_SPARROW = 5;
+			break;
 		case GAMMA_HANTO:
 			MAX_BUTTERFLY = 1;
 			MAX_SPARROW = 5;
@@ -51,8 +59,44 @@ public abstract class MoveValidator {
 	 * @param type
 	 * @throws HantoException
 	 */
-	public abstract void canMove(HantoBoard board, HantoCoordinate from, HantoCoordinate to, HantoPlayerColor onMove, HantoPieceType type) throws HantoException;
+	public abstract void canMove(HantoBoard board, HantoCoordinate from, HantoCoordinate to,
+			HantoPlayerColor onMove, HantoPieceType type) throws HantoException;
 	   
+
+	/**
+	 * 
+	 * @param board
+	 * @param onMove
+	 * @param type
+	 * @throws HantoException
+	 */
+	public void checkButterflyPlayed(HantoBoard board, 
+			HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
+		
+		if(board.getPieceCount(HantoPieceType.BUTTERFLY, onMove) == 0){
+			throw new HantoException("Please play butterfly before move the piece");
+		}
+	}
+	
+	
+	
+	/**
+	 * 
+	 * @param board
+	 * @param from
+	 * @param onMove
+	 * @param type
+	 * @throws HantoException
+	 */
+
+	public void checkPieceOnBoard(HantoBoard board, HantoCoordinateImpl from,
+			HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
+		
+		if(board.getPieceAt(from) == null || board.getPieceAt(from).getColor() != onMove ||
+				board.getPieceAt(from).getType() != type){
+			throw new HantoException ("no such piece on the given from coordinate");
+		}
+	}
 
 	/**
 	 * @param board
@@ -61,10 +105,12 @@ public abstract class MoveValidator {
 	 * @param type
 	 * @throws HantoException
 	 */
-	public void checkPutPiece(HantoBoard board, HantoCoordinateImpl to, HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
-		checkEmptyDestination(board,to);
-		checkAdjacency(board,to,onMove);
-		checkPieceNum(board,onMove, type);
+	public void checkPutPiece(HantoBoard board, HantoCoordinateImpl to,
+			HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
+		
+		checkEmptyDestination(board, to);
+		checkAdjacency(board, to, onMove);
+		checkPieceNum(board, onMove, type);
 	}
 	
 	/**
@@ -73,7 +119,9 @@ public abstract class MoveValidator {
 	 * @param to
 	 * @throws HantoException
 	 */
-	public void checkEmptyDestination(HantoBoard board, HantoCoordinateImpl to) throws HantoException{
+	public void checkEmptyDestination(HantoBoard board,
+			HantoCoordinateImpl to) throws HantoException{
+		
 		 if(!board.checkEmpty(to)){
 			 throw new HantoException("the destination already has a hanto piece");
 		 }
@@ -86,9 +134,11 @@ public abstract class MoveValidator {
 	 * @param onMove
 	 * @throws HantoException
 	 */
-	public void checkAdjacency(HantoBoard board, HantoCoordinateImpl to, HantoPlayerColor onMove) throws HantoException {
+	public void checkAdjacency(HantoBoard board,
+			HantoCoordinateImpl to, HantoPlayerColor onMove) throws HantoException {
+		
 		boolean sameFlag = false, oppoFlag = false;
-		List<HantoPiece> neighbors = board.getNeighborPieces(to);
+		final List<HantoPiece> neighbors = board.getNeighborPieces(to);
 		for(HantoPiece p: neighbors){
 			if(p.getColor() == onMove){
 				sameFlag = true;
@@ -98,9 +148,10 @@ public abstract class MoveValidator {
 			}
 		}
 		
-		if(!(sameFlag&&!oppoFlag)){
-			throw new HantoException("The adjacent hex do not have a same color piece or taken by the other color");
-		}		
+		if(!(sameFlag && !oppoFlag)){
+			throw new HantoException(
+					"The adjacent hex do not have a same color piece or taken by the other color");
+		}
 	}
 	
 	/**
@@ -110,20 +161,22 @@ public abstract class MoveValidator {
 	 * @param type
 	 * @throws HantoException 
 	 */
-	public void checkPieceNum(HantoBoard board, HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
+	public void checkPieceNum(HantoBoard board,
+			HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
+		
 		switch(type){
 		case BUTTERFLY:
-			if(board.getPieceCount(type,onMove) >= MAX_BUTTERFLY){
+			if(board.getPieceCount(type, onMove) >= MAX_BUTTERFLY){
 				throw new HantoException("exceed the butterfly pieces use");
 			}
 			break;
 		case SPARROW:
-			if(board.getPieceCount(type,onMove) >= MAX_SPARROW){
+			if(board.getPieceCount(type, onMove) >= MAX_SPARROW){
 				throw new HantoException("exceed the sparroe pieces use");
 			}
 			break;
 		case CRAB:
-			if(board.getPieceCount(type,onMove) >= MAX_CRAB){
+			if(board.getPieceCount(type, onMove) >= MAX_CRAB){
 				throw new HantoException("exceed the sparroe pieces use");
 			}
 			break;
@@ -138,9 +191,11 @@ public abstract class MoveValidator {
 	 * @param to
 	 * @throws HantoException 
 	 */
-	public void checkConnected(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to) throws HantoException{
-		HantoBoard newboard = new HantoBoard(board);
-		newboard.movePiece(from,to);
+	public void checkConnected(HantoBoard board, 
+			HantoCoordinateImpl from, HantoCoordinateImpl to) throws HantoException{
+		
+		final HantoBoard newboard = new HantoBoard(board);
+		newboard.movePiece(from, to);
 		newboard.getBoard();
 		if( !newboard.isConnected(to)){
 			throw new HantoException("The pieces will not be connected after the move");

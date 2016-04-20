@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * This files was developed for CS4233: Object-Oriented Analysis & Design.
+ * The course was taken at Worcester Polytechnic Institute.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
+
 package hanto.studentqliao.delta;
 
 import hanto.common.HantoCoordinate;
@@ -12,6 +22,11 @@ import hanto.studentqliao.common.HantoGameBase;
 import hanto.studentqliao.common.MoveValidator;
 import hanto.studentqliao.common.SparrowValidator;
 
+/**
+ * 
+ * @author Qiaoyu Liao
+ * @version Apr 19, 2016
+ */
 public class DeltaHantoGame extends HantoGameBase{
 
 	public DeltaHantoGame(HantoPlayerColor movesFirst) {
@@ -26,13 +41,14 @@ public class DeltaHantoGame extends HantoGameBase{
 			mv = new ButterflyValidator(HantoGameID.DELTA_HANTO);
 		}
 		else if(type == HantoPieceType.CRAB){
-			mv = new CrabValidator(HantoGameID.DELTA_HANTO);			
+			mv = new CrabValidator(HantoGameID.DELTA_HANTO);
 		}
 		else if(type == HantoPieceType.SPARROW){
 			mv = new SparrowValidator(HantoGameID.DELTA_HANTO);
 		}
 		return mv;
 	}
+
 	
 	@Override
 	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from, HantoCoordinate to)
@@ -42,11 +58,11 @@ public class DeltaHantoGame extends HantoGameBase{
 			return onMove == HantoPlayerColor.RED ? MoveResult.BLUE_WINS : MoveResult.RED_WINS;
 		}
 		//game end check
-		checkGameEnd();		
+		checkGameEnd();
 		//move check
-		validateMove(pieceType,from,to);
+		validateMove(pieceType, from, to);
 		//make the move
-		doMove(pieceType,from,to);
+		doMove(pieceType, from, to);
 		//increment the count
 		incrementMove();
 		//return result

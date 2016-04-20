@@ -1045,6 +1045,25 @@ public class GammaHantoMasterTest
 			}
 		}
 		
+		/**
+		 * test null to
+		 * @throws HantoException
+		 */
+		@Test(expected=HantoException.class) // 29
+		public void testNullTo() throws HantoException
+		{
+			game.makeMove(SPARROW, null, null);
+		}
+		
+		/**
+		 * test null to
+		 * @throws HantoException
+		 */
+		@Test(expected=HantoException.class) // 29
+		public void testNullPieceType() throws HantoException
+		{
+			game.makeMove(null, null, makeCoordinate(0, 0));
+		}
 		
 		
 		

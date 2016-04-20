@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * This files was developed for CS4233: Object-Oriented Analysis & Design.
+ * The course was taken at Worcester Polytechnic Institute.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 package hanto.studentqliao.common;
 
 import java.util.ArrayList;
@@ -10,6 +19,11 @@ import hanto.common.HantoGameID;
 import hanto.common.HantoPieceType;
 import hanto.common.HantoPlayerColor;
 
+/**
+ * 
+ * @author Qiaoyu Liao
+ * @version Apr 19, 2016
+ */
 public class CrabValidator extends MoveValidator {
 	List<HantoCoordinateImpl> movable;
 	
@@ -19,16 +33,15 @@ public class CrabValidator extends MoveValidator {
 	}
 
 	@Override
-	public void canMove(HantoBoard board, HantoCoordinate from, HantoCoordinate to, HantoPlayerColor onMove,
-			HantoPieceType type) throws HantoException{
-		//pieceTypeChecker(type);
-		HantoCoordinateImpl dest = new HantoCoordinateImpl(to);
+	public void canMove(HantoBoard board, HantoCoordinate from, HantoCoordinate to,
+			HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
+		final HantoCoordinateImpl dest = new HantoCoordinateImpl(to);
 		if(from == null){
-			checkPutPiece(board,dest,onMove,type);
+			checkPutPiece(board, dest, onMove, type);
 		}
 		else{
-			HantoCoordinateImpl origin = new HantoCoordinateImpl(from);
-			checkWalk(board,origin,dest,onMove,type);
+			final HantoCoordinateImpl origin = new HantoCoordinateImpl(from);
+			checkWalk(board, origin, dest, onMove, type);
 		}
 		
 	}
@@ -43,18 +56,18 @@ public class CrabValidator extends MoveValidator {
 	 * @param type
 	 * @throws HantoException
 	 */
-	public void checkWalk(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to, HantoPlayerColor onMove,
-			HantoPieceType type) throws HantoException{	
+	public void checkWalk(HantoBoard board, HantoCoordinateImpl from, 
+			HantoCoordinateImpl to, HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
 		int distanceCount = 1;
-		checkButterflyPlayed(board,onMove,type);
-		checkEmptyDestination(board,to);
-		checkPieceOnBoard(board,from,onMove,type);
+		checkButterflyPlayed(board, onMove, type);
+		checkEmptyDestination(board, to);
+		checkPieceOnBoard(board, from, onMove, type);
 		
 		movable.add(from);
 		while(distanceCount < 4){
 			List<HantoCoordinateImpl> temp = new ArrayList<HantoCoordinateImpl>();
 			for(HantoCoordinateImpl c: movable){
-				temp.addAll(getMovable(board,from, c));				
+				temp.addAll(getMovable(board, from, c));
 			}
 			movable.addAll(temp);
 			
@@ -67,91 +80,29 @@ public class CrabValidator extends MoveValidator {
 		}
 		
 		throw new HantoException("Cannot walk three steps to the destination");
-		
-		/**
-		checkMovable(board,from,to);
-		checkDistance(from,to);
-		checkConnected(board,from,to);
-		*/
+	
 	}
 	
-	/**
-	 * 
-	 * @param board
-	 * @param onMove
-	 * @param type
-	 * @throws HantoException
-	 */
-	public void checkButterflyPlayed(HantoBoard board, HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
-		if(board.getPieceCount(HantoPieceType.BUTTERFLY,onMove) == 0){
-			throw new HantoException("Please play butterfly before move the piece");
-		}	
-	}
 	
-	/**
-	 * 
-	 * @param from
-	 * @param to
-	 * @throws HantoException
-	 */
-	/**
-	public void checkDistance(HantoCoordinateImpl from, HantoCoordinateImpl to)throws HantoException{
-		if(from.getDistance(to) != 1){
-			throw new HantoException("The distance of walk should be 1");
-		}
-	}
-	*/
+	
 	
 	/**
 	 * 
 	 * @param board
 	 * @param from
-	 * @param onMove
-	 * @param type
+	 * @param c
+	 * @return List<HantoCoordinateImpl> list of movable coordinates
 	 * @throws HantoException
 	 */
-
-	public void checkPieceOnBoard(HantoBoard board, HantoCoordinateImpl from,HantoPlayerColor onMove,
-			HantoPieceType type) throws HantoException{
-		if(board.getPieceAt(from) == null || board.getPieceAt(from).getColor() != onMove || board.getPieceAt(from).getType() != type){
-			throw new HantoException ("no such piece on the given from coordinate");
-		}
-	}
-
-	
-	/**
-	 * 
-	 * @param board
-	 * @param from
-	 * @param to
-	 * @throws HantoException
-	 */
-	/**
-	public void checkMovable(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to)throws HantoException{
-		List<HantoCoordinateImpl> n1 = from.getNeighbors();
-		List<HantoCoordinateImpl> n2 = to.getNeighbors();
-		List<HantoCoordinateImpl> common = new ArrayList <HantoCoordinateImpl> ();
-		
-		for (HantoCoordinateImpl c: n1){
-			if(n2.contains(c) && board.checkEmpty(c)){
-				common.add(c);
-			}
-		}
-		
-		if(common.size() == 0){
-			throw new HantoException("The piece cannot be move to the position because two other pieces already at each side");
-		}
-	}
-	*/
-	
-	public List<HantoCoordinateImpl> getMovable(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl c) throws HantoException{
-			List<HantoCoordinateImpl> empty = board.getEmptyNeighbors(c);
+	public List<HantoCoordinateImpl> getMovable(HantoBoard board,
+			HantoCoordinateImpl from, HantoCoordinateImpl c) throws HantoException{
+			final List<HantoCoordinateImpl> empty = board.getEmptyNeighbors(c);
 			
 			for(Iterator<HantoCoordinateImpl> iterator = empty.iterator(); iterator.hasNext();){
 				HantoCoordinateImpl hc = iterator.next();
 				//first check connected
 				HantoBoard newboard = new HantoBoard(board);
-				newboard.movePiece(from,hc);
+				newboard.movePiece(from, hc);
 				newboard.getBoard();
 				if( !newboard.isConnected(hc)){
 					iterator.remove();
@@ -173,7 +124,7 @@ public class CrabValidator extends MoveValidator {
 				
 			}
 			
-			return empty;				
+			return empty;
 	}
 
 }

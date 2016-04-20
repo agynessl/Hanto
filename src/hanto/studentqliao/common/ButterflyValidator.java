@@ -32,40 +32,21 @@ public class ButterflyValidator extends MoveValidator{
 	}
 
 	@Override
-	public void canMove(HantoBoard board, HantoCoordinate from, HantoCoordinate to, HantoPlayerColor onMove,
-			HantoPieceType type) throws HantoException{
-		//pieceTypeChecker(type);
-		HantoCoordinateImpl dest = new HantoCoordinateImpl(to);
+	public void canMove(HantoBoard board, HantoCoordinate from, HantoCoordinate to,
+			HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
+		
+		final HantoCoordinateImpl dest = new HantoCoordinateImpl(to);
 		if(from == null){
-			checkPutPiece(board,dest,onMove,type);
+			checkPutPiece(board, dest, onMove, type);
 		}
 		else{
-			HantoCoordinateImpl origin = new HantoCoordinateImpl(from);
-			checkWalk(board,origin,dest,onMove,type);
+			final HantoCoordinateImpl origin = new HantoCoordinateImpl(from);
+			checkWalk(board, origin, dest, onMove, type);
 		}
 		
 	}
 	
-	/**
-	 * 
-	 * @param type
-	 * @throws HantoException
-	 */
-	/**
-	private void pieceTypeChecker(HantoPieceType type) throws HantoException{	
-		if(type == null){
-			throw new HantoException("Need a valid piece type");
-		}
-		switch(type){
-		case BUTTERFLY:
-			return;
-		case SPARROW:
-			return;
-			default:
-				throw new HantoException("Gamma Hanto only use Butterfly and Sparrow");
-		}
-	}
-	*/
+	
 	
 	/**
 	 * 
@@ -76,29 +57,18 @@ public class ButterflyValidator extends MoveValidator{
 	 * @param type
 	 * @throws HantoException
 	 */
-	public void checkWalk(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to, HantoPlayerColor onMove,
-			HantoPieceType type) throws HantoException{	
-		checkButterflyPlayed(board,onMove,type);
-		checkEmptyDestination(board,to);
-		checkPieceOnBoard(board,from,onMove,type);
-		checkMovable(board,from,to);
-		checkDistance(from,to);
-		checkConnected(board,from,to);
+	public void checkWalk(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to,
+			HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
+		
+		checkButterflyPlayed(board, onMove, type);
+		checkEmptyDestination(board, to);
+		checkPieceOnBoard(board, from, onMove, type);
+		checkMovable(board, from, to);
+		checkDistance(from, to);
+		checkConnected(board, from, to);
 		
 	}
 	
-	/**
-	 * 
-	 * @param board
-	 * @param onMove
-	 * @param type
-	 * @throws HantoException
-	 */
-	public void checkButterflyPlayed(HantoBoard board, HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
-		if(board.getPieceCount(HantoPieceType.BUTTERFLY,onMove) == 0){
-			throw new HantoException("Please play butterfly before move the piece");
-		}	
-	}
 	
 	/**
 	 * 
@@ -106,26 +76,14 @@ public class ButterflyValidator extends MoveValidator{
 	 * @param to
 	 * @throws HantoException
 	 */
-	public void checkDistance(HantoCoordinateImpl from, HantoCoordinateImpl to)throws HantoException{
+	public void checkDistance(HantoCoordinateImpl from,
+			HantoCoordinateImpl to)throws HantoException{
+		
 		if(from.getDistance(to) != 1){
 			throw new HantoException("The distance of walk should be 1");
 		}
 	}
-	
-	/**
-	 * 
-	 * @param board
-	 * @param from
-	 * @param onMove
-	 * @param type
-	 * @throws HantoException
-	 */
-	public void checkPieceOnBoard(HantoBoard board, HantoCoordinateImpl from,HantoPlayerColor onMove,
-			HantoPieceType type) throws HantoException{
-		if(board.getPieceAt(from) == null || board.getPieceAt(from).getColor() != onMove || board.getPieceAt(from).getType() != type){
-			throw new HantoException ("no such piece on the given from coordinate");
-		}
-	}
+
 	
 	/**
 	 * 
@@ -134,10 +92,12 @@ public class ButterflyValidator extends MoveValidator{
 	 * @param to
 	 * @throws HantoException
 	 */
-	public void checkMovable(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to)throws HantoException{
-		List<HantoCoordinateImpl> n1 = from.getNeighbors();
-		List<HantoCoordinateImpl> n2 = to.getNeighbors();
-		List<HantoCoordinateImpl> common = new ArrayList <HantoCoordinateImpl> ();
+	public void checkMovable(HantoBoard board, HantoCoordinateImpl from,
+			HantoCoordinateImpl to)throws HantoException{
+		
+		final List<HantoCoordinateImpl> n1 = from.getNeighbors();
+		final List<HantoCoordinateImpl> n2 = to.getNeighbors();
+		final List<HantoCoordinateImpl> common = new ArrayList <HantoCoordinateImpl> ();
 		
 		for (HantoCoordinateImpl c: n1){
 			if(n2.contains(c) && board.checkEmpty(c)){
@@ -146,7 +106,8 @@ public class ButterflyValidator extends MoveValidator{
 		}
 		
 		if(common.size() == 0){
-			throw new HantoException("The piece cannot be move to the position because two other pieces already at each side");
+			throw new HantoException("The piece cannot be move to the position "
+					+ "because two other pieces already at each side");
 		}
 	}
 	

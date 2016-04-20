@@ -11,16 +11,6 @@
  *******************************************************************************/
 package hanto.studentqliao.gamma;
 
-import static hanto.common.HantoPlayerColor.BLUE;
-import static hanto.common.MoveResult.BLUE_WINS;
-import static hanto.common.MoveResult.DRAW;
-import static hanto.common.MoveResult.OK;
-import static hanto.common.MoveResult.RED_WINS;
-import static hanto.common.HantoPieceType.BUTTERFLY;
-
-
-import java.util.Map;
-
 import hanto.common.*;
 import hanto.studentqliao.common.*;
 
@@ -29,9 +19,6 @@ import hanto.studentqliao.common.*;
  * @version April 7, 2016
  */
 public class GammaHantoGame extends HantoGameBase {
-	
-	//MoveValidator walkValidator;
-	
 	
 	/**
 	 * 
@@ -44,10 +31,8 @@ public class GammaHantoGame extends HantoGameBase {
 		gameOver = false;
 		firstMove = true;
 		blueButterflyCoor = redButterflyCoor = null;
-		//walkValidator = new ButterflyValidator(HantoGameID.GAMMA_HANTO);
 		MAX_TURN = 20;
 	}
-
 
 
 	@Override

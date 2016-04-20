@@ -76,7 +76,7 @@ public class HantoCoordinateImpl implements HantoCoordinate
 	@Override
 	public int hashCode()
 	{
-		return x*37+ y;
+		return x * 37 + y;
 	}
 
 	/*
@@ -123,7 +123,7 @@ public class HantoCoordinateImpl implements HantoCoordinate
 		case NorthEast: 
 			outx = x - 1;
 			outy = y + 1;
-		break;		
+		break;
 		}
 		return new HantoCoordinateImpl(outx, outy);
 	}
@@ -133,7 +133,7 @@ public class HantoCoordinateImpl implements HantoCoordinate
 	 * @return HantoCoordinateImpl
 	 */
 	public List<HantoCoordinateImpl> getNeighbors(){
-		List<HantoCoordinateImpl> neighbors = new ArrayList<HantoCoordinateImpl>();
+		final List<HantoCoordinateImpl> neighbors = new ArrayList<HantoCoordinateImpl>();
 		for(Direction d: Direction.values()){
 			neighbors.add(getNeighbor(d));
 		}
@@ -146,8 +146,8 @@ public class HantoCoordinateImpl implements HantoCoordinate
 	 * @return integer for the distance
 	 */
 	public int getDistance(HantoCoordinate coor){
-		int z1 = 0 - x - y;
-		int z2 = 0 - coor.getX() - coor.getY();
+		final int z1 = 0 - x - y;
+		final int z2 = 0 - coor.getX() - coor.getY();
 
 		return (Math.abs(x - coor.getX()) + Math.abs(y - coor.getY()) + Math.abs(z1 - z2)) / 2;
 	}

@@ -34,7 +34,8 @@ public class JumpValidator extends MoveValidator {
 	 * @throws HantoException
 	 */
 	@Override
-	public void checkMove(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to, HantoPlayerColor onMove,
+	public void checkMove(HantoBoard board, HantoCoordinateImpl from, 
+			HantoCoordinateImpl to, HantoPlayerColor onMove,
 			HantoPieceType type) throws HantoException {		
 		checkButterflyPlayed(board, onMove, type);
 		checkEmptyDestination(board, to);
@@ -59,7 +60,7 @@ public class JumpValidator extends MoveValidator {
 			throw new HantoException("For Jump it has to be in a straight line");
 		}
 		
-		int distance = from.getDistance(to);
+		final int distance = from.getDistance(to);
 		
 		if(distance < 2){
 			throw new HantoException("For Jump it has to jump over an occpied hex");
@@ -69,7 +70,8 @@ public class JumpValidator extends MoveValidator {
 		dy /= distance;
 		
 		for(int i = 1; i < distance; i++){
-			HantoCoordinateImpl temp = new HantoCoordinateImpl(i * dx + from.getX(), i * dy + from.getY());
+			HantoCoordinateImpl temp = new HantoCoordinateImpl(i * dx + from.getX(),
+					i * dy + from.getY());
 			if(board.getPieceAt(temp) == null){
 				throw new HantoException("The path in the jump is not occupied");
 			}

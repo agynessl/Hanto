@@ -20,7 +20,7 @@ import hanto.tournament.*;
 
 /**
  * Description
- * @version Oct 13, 2014
+ * @version Apr 20, 2016
  */
 public class HantoPlayer implements HantoGamePlayer
 {
@@ -38,8 +38,9 @@ public class HantoPlayer implements HantoGamePlayer
 		if(doIMoveFirst){
 			game = (EpsilonHantoGame) HantoGameFactory.getInstance().makeHantoGame(version, myColor);
 		}else{
-			HantoPlayerColor movesFirst;
-			movesFirst = (myColor == HantoPlayerColor.BLUE) ? HantoPlayerColor.RED : HantoPlayerColor.BLUE;
+			final HantoPlayerColor movesFirst;
+			movesFirst = (myColor == HantoPlayerColor.BLUE) ? 
+					HantoPlayerColor.RED : HantoPlayerColor.BLUE;
 			game = (EpsilonHantoGame) HantoGameFactory.getInstance().makeHantoGame(version, movesFirst);
 		}
 	}
@@ -57,7 +58,8 @@ public class HantoPlayer implements HantoGamePlayer
 			} catch (HantoException e) {
 				System.out.println("Not able to play origin move");
 			}
-			return new HantoMoveRecord(HantoPieceType.BUTTERFLY, null, new HantoCoordinateImpl(0,0));
+			return new HantoMoveRecord(HantoPieceType.BUTTERFLY,
+					null, new HantoCoordinateImpl(0,0));
 		}
 		
 		else{
@@ -69,7 +71,7 @@ public class HantoPlayer implements HantoGamePlayer
 				System.out.println("Opponent move not valid");
 			}
 			
-			Collection<HantoMoveRecord> allValidMoves = game.findAllValidMoves(myColor);
+			final Collection<HantoMoveRecord> allValidMoves = game.findAllValidMoves(myColor);
 			
 			HantoMoveRecord bestMove = new HantoMoveRecord(null, null, null);
 			

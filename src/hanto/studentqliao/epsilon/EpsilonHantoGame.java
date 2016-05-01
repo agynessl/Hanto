@@ -61,15 +61,19 @@ public class EpsilonHantoGame extends HantoGameBase {
 	 * @return collection of valid moves
 	 */
 	public Collection<HantoMoveRecord> findAllValidMoves(HantoPlayerColor thisMove){
-		Collection<HantoMoveRecord> availableMove = new LinkedList<HantoMoveRecord>();
-		Set<HantoCoordinateImpl> availableCoor = new HashSet<HantoCoordinateImpl>();
+		final Collection<HantoMoveRecord> availableMove = new LinkedList<HantoMoveRecord>();
+		final Set<HantoCoordinateImpl> availableCoor = new HashSet<HantoCoordinateImpl>();
 			
 		//find the origin put move
 		if(moveCounter == 1 && thisMove == movesFirst){
-			availableMove.add(new HantoMoveRecord(HantoPieceType.BUTTERFLY, null, new HantoCoordinateImpl(0, 0)));
-			availableMove.add(new HantoMoveRecord(HantoPieceType.CRAB, null, new HantoCoordinateImpl(0, 0)));
-			availableMove.add(new HantoMoveRecord(HantoPieceType.SPARROW, null, new HantoCoordinateImpl(0, 0)));
-			availableMove.add(new HantoMoveRecord(HantoPieceType.HORSE, null, new HantoCoordinateImpl(0, 0)));
+			availableMove.add(new HantoMoveRecord(HantoPieceType.BUTTERFLY,
+					null, new HantoCoordinateImpl(0, 0)));
+			availableMove.add(new HantoMoveRecord(HantoPieceType.CRAB,
+					null, new HantoCoordinateImpl(0, 0)));
+			availableMove.add(new HantoMoveRecord(HantoPieceType.SPARROW,
+					null, new HantoCoordinateImpl(0, 0)));
+			availableMove.add(new HantoMoveRecord(HantoPieceType.HORSE,
+					null, new HantoCoordinateImpl(0, 0)));
 			return availableMove;
 		}
 		
@@ -141,7 +145,7 @@ public class EpsilonHantoGame extends HantoGameBase {
 	
 		
 		//setup new board
-		HantoBoard after = new HantoBoard(board);
+		final HantoBoard after = new HantoBoard(board);
 		if(move.getFrom() == null){
 			final HantoPiece piece = new HantoPieceImpl(onMove, move.getPiece());
 			after.putPieceAt(piece, move.getTo());
@@ -153,11 +157,15 @@ public class EpsilonHantoGame extends HantoGameBase {
 			}
 		}
 		
-		Collection<HantoCoordinateImpl> willSurroundedMe = after.getOccupiedNeighbors(new HantoCoordinateImpl(myButterfly));
-		Collection<HantoCoordinateImpl> currentSurroundedMe = board.getOccupiedNeighbors(new HantoCoordinateImpl(myButterfly));
+		final Collection<HantoCoordinateImpl> willSurroundedMe = 
+				after.getOccupiedNeighbors(new HantoCoordinateImpl(myButterfly));
+		final Collection<HantoCoordinateImpl> currentSurroundedMe = 
+				board.getOccupiedNeighbors(new HantoCoordinateImpl(myButterfly));
 		
-		Collection<HantoCoordinateImpl> willSurroundedO = after.getOccupiedNeighbors(new HantoCoordinateImpl(oButterfly));
-		Collection<HantoCoordinateImpl> currentSurroundedO = board.getOccupiedNeighbors(new HantoCoordinateImpl(oButterfly));
+		final Collection<HantoCoordinateImpl> willSurroundedO = 
+				after.getOccupiedNeighbors(new HantoCoordinateImpl(oButterfly));
+		final Collection<HantoCoordinateImpl> currentSurroundedO = 
+				board.getOccupiedNeighbors(new HantoCoordinateImpl(oButterfly));
 		
 		double scaleme = currentSurroundedMe.size() / 3;
 		

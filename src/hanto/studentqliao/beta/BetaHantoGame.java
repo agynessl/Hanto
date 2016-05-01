@@ -89,7 +89,8 @@ public class BetaHantoGame extends HantoGameBase
 				board.getNeighborPieces(new HantoCoordinateImpl(to));
 		
 		if(neighborsPiece.size() == 0){
-			throw new HantoException("The piece is not connected with any other pieces on the board");
+			throw new HantoException("The piece is not connected with any "
+					+ "other pieces on the board");
 		}
 	
 		// check piece number

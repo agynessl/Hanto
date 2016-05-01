@@ -9,7 +9,6 @@
  *******************************************************************************/
 package hanto.studentqliao.common;
 
-import hanto.common.HantoCoordinate;
 import hanto.common.HantoException;
 import hanto.common.HantoGameID;
 import hanto.common.HantoPieceType;
@@ -24,20 +23,6 @@ public class JumpValidator extends MoveValidator {
 	public JumpValidator(HantoGameID id) {
 		super(id);
 	}
-
-	@Override
-	public void canMove(HantoBoard board, HantoCoordinate from, HantoCoordinate to, HantoPlayerColor onMove,
-			HantoPieceType type) throws HantoException {
-		final HantoCoordinateImpl dest = new HantoCoordinateImpl(to);
-		if(from == null){
-			checkPutPiece(board, dest, onMove, type);
-		}
-		else{
-			final HantoCoordinateImpl origin = new HantoCoordinateImpl(from);
-			checkJump(board, origin, dest, onMove, type);
-		}
-		
-	}
 	
 	/**
 	 * check if horse can jump
@@ -48,9 +33,9 @@ public class JumpValidator extends MoveValidator {
 	 * @param type
 	 * @throws HantoException
 	 */
-	public void checkJump(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to, HantoPlayerColor onMove,
-			HantoPieceType type) throws HantoException {
-		
+	@Override
+	public void checkMove(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to, HantoPlayerColor onMove,
+			HantoPieceType type) throws HantoException {		
 		checkButterflyPlayed(board, onMove, type);
 		checkEmptyDestination(board, to);
 		checkPieceOnBoard(board, from, onMove, type);
@@ -70,7 +55,7 @@ public class JumpValidator extends MoveValidator {
 		int dx = to.getX() - from.getX();
 		int dy = to.getY() - from.getY();
 		
-		if(!(dy == -dy || dx == 0 || dy == 0 )){
+		if(!(dx == -dy || dx == 0 || dy == 0 )){
 			throw new HantoException("For Jump it has to be in a straight line");
 		}
 		
@@ -86,8 +71,6 @@ public class JumpValidator extends MoveValidator {
 		for(int i = 1; i < distance; i++){
 			HantoCoordinateImpl temp = new HantoCoordinateImpl(i*dx + from.getX(), i*dy + from.getY());
 			if(board.getPieceAt(temp) == null){
-				System.out.println("distance is " + distance);
-				System.out.println(temp.getX() + " " + temp.getY() + "this is not occpied");
 				throw new HantoException("The path in the jump is not occupied");
 			}
 		}

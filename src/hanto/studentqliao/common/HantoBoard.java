@@ -155,6 +155,7 @@ public class HantoBoard{
 	 * @return the map of the board
 	 */
 	public Map<HantoCoordinateImpl,HantoPiece> getBoard(){
+		/**
 		final Map<HantoCoordinateImpl,HantoPiece> temp = boardpieces;
 		String s = "";
 		for(HantoCoordinateImpl c: temp.keySet()){
@@ -162,6 +163,7 @@ public class HantoBoard{
 		temp.get(c).getColor() + " " + temp.get(c).getType() + "\n";
 		}
 		System.out.println(s);
+		*/
 		return boardpieces;
 	}
 	
@@ -222,7 +224,6 @@ public class HantoBoard{
 				}
 				visitedCoor.addAll(temp);
 			}while(visitedCoor.size() > size);
-				System.out.println(visitedCoor.size() + " " + coorSet.size());
 				return visitedCoor.size() == coorSet.size();
 			}
 					

@@ -286,7 +286,6 @@ public abstract class HantoGameBase implements HantoGame {
 			s += "(" + c.getX() + ", " + c.getY() + ")" + 
 		temp.get(c).getColor() + " " + temp.get(c).getType() + "\n";
 		}
-		System.out.println(s);
 		return s;
 	}
 	

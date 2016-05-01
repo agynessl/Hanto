@@ -9,56 +9,76 @@
  *******************************************************************************/
 package hanto.studentqliao.tournament;
 
+import hanto.common.HantoException;
+import hanto.common.HantoGame;
 import hanto.common.HantoGameID;
 import hanto.common.HantoPlayerColor;
+import hanto.common.MoveResult;
+import hanto.studentqliao.HantoGameFactory;
 import hanto.studentqliao.tournament.HantoPlayer;
 import hanto.tournament.HantoMoveRecord;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class HantoPlayerTest {
-	@Test
-	public void testPlay1(){
-		HantoPlayer player1 = new HantoPlayer();
-		HantoPlayer player2 = new HantoPlayer();
-		
-		player1.startGame(HantoGameID.EPSILON_HANTO, HantoPlayerColor.BLUE, true);
-		player2.startGame(HantoGameID.EPSILON_HANTO, HantoPlayerColor.RED, false);
-		
-		HantoMoveRecord record;
-		record = player1.makeMove(null);
-		
-		for (int i = 0; i < 100; i++) {
-			switch (i % 2) {
-			case 0:
-				record = player2.makeMove(record);
-				break;
-			case 1:
-				record = player1.makeMove(record);
-				break;
-			}
-		}
+	private HantoPlayer p1;
+	private HantoPlayer p2;
+	private HantoGame game;
+
+	@Before
+	public void setup() {
+		game = HantoGameFactory.getInstance().makeHantoGame(HantoGameID.EPSILON_HANTO,
+				HantoPlayerColor.BLUE);
+		p1 = new HantoPlayer();
+		p2 = new HantoPlayer();
+		p1.startGame(HantoGameID.EPSILON_HANTO, HantoPlayerColor.BLUE, true);
+		p2.startGame(HantoGameID.EPSILON_HANTO, HantoPlayerColor.RED, false);
 	}
+	
 	@Test
-	public void testPlay2(){
-		HantoPlayer player1 = new HantoPlayer();
-		HantoPlayer player2 = new HantoPlayer();
-		
-		player1.startGame(HantoGameID.EPSILON_HANTO, HantoPlayerColor.RED, true);
-		player2.startGame(HantoGameID.EPSILON_HANTO, HantoPlayerColor.BLUE, false);
-		
+	public void testPlay1() throws HantoException{
+		MoveResult result;
 		HantoMoveRecord record;
-		record = player1.makeMove(null);
+		record = p1.makeMove(null);
 		
 		for (int i = 0; i < 100; i++) {
+			result = game.makeMove(record.getPiece(), record.getFrom(), record.getTo());
+			if (result != MoveResult.OK) {
+				return;
+			}
 			switch (i % 2) {
 			case 0:
-				record = player2.makeMove(record);
+				record = p2.makeMove(record);
 				break;
 			case 1:
-				record = player1.makeMove(record);
+				record = p1.makeMove(record);
 				break;
 			}
+				
+		}		
+	}
+	
+	@Test
+	public void testPlay2() throws HantoException{
+		MoveResult result;
+		HantoMoveRecord record;
+		record = p1.makeMove(null);
+		
+		for (int i = 0; i < 100; i++) {
+			result = game.makeMove(record.getPiece(), record.getFrom(), record.getTo());
+			if (result != MoveResult.OK) {
+				return;
+			}
+			switch (i % 2) {
+			case 0:
+				record = p2.makeMove(record);
+				break;
+			case 1:
+				record = p1.makeMove(record);
+				break;
+			}
+			
 		}
 	}
 

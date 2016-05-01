@@ -66,12 +66,24 @@ public class HantoPlayer implements HantoGamePlayer
 				game.makeMove(opponentsMove.getPiece(),
 						opponentsMove.getFrom(), opponentsMove.getTo());
 			} catch (HantoException e) {
+				/**
+				System.out.println(e.getMessage());
+				System.out.println(game.getPrintableBoard());
+				System.out.println(opponentsMove.getFrom().getX() + ", " +
+						opponentsMove.getFrom().getY() + "  |  " +  opponentsMove.getTo().getX() 
+						+ opponentsMove.getTo().getY());
+						*/
 				System.out.println("Opponent move not valid");
 			}
 			
 			Collection<HantoMoveRecord> allValidMoves = game.findAllValidMoves(myColor);
 			
 			HantoMoveRecord bestMove = new HantoMoveRecord(null, null, null);
+			
+			if(allValidMoves.size() == 0){
+				return bestMove;
+			}
+			
 			double bestMoveWeight = -20000;
 			for (HantoMoveRecord move : allValidMoves) {
 				double weight = game.MoveRating(move, myColor);

@@ -34,22 +34,7 @@ public class RunValidator extends MoveValidator {
 	public RunValidator(HantoGameID id){
 		super(id);
 		movable = new ArrayList<HantoCoordinateImpl>();
-	}
-
-	@Override
-	public void canMove(HantoBoard board, HantoCoordinate from, HantoCoordinate to,
-			HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
-		final HantoCoordinateImpl dest = new HantoCoordinateImpl(to);
-		if(from == null){
-			checkPutPiece(board, dest, onMove, type);
-		}
-		else{
-			final HantoCoordinateImpl origin = new HantoCoordinateImpl(from);
-			checkWalk(board, origin, dest, onMove, type);
-		}
-		
-	}
-	
+	}	
 	
 	/**
 	 * check if the crab can walk three distance to the destination
@@ -60,7 +45,8 @@ public class RunValidator extends MoveValidator {
 	 * @param type
 	 * @throws HantoException
 	 */
-	public void checkWalk(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to, 
+	@Override
+	public void checkMove(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to, 
 			HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
 		int distanceCount = 1;
 		checkButterflyPlayed(board, onMove, type);
@@ -84,12 +70,9 @@ public class RunValidator extends MoveValidator {
 		}
 		
 		throw new HantoException("Cannot walk three steps to the destination");
-	
 	}
 	
-	
-	
-	
+		
 	/**
 	 * get the available coordinate for move
 	 * @param board

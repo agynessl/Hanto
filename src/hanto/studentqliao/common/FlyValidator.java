@@ -34,21 +34,6 @@ public class FlyValidator extends MoveValidator{
 		super(id);
 	}
 
-	@Override
-	public void canMove(HantoBoard board, HantoCoordinate from, 
-			HantoCoordinate to, HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
-		final HantoCoordinateImpl dest = new HantoCoordinateImpl(to);
-		if(from == null){
-			checkPutPiece(board, dest, onMove, type);
-		}
-		else{
-			final HantoCoordinateImpl origin = new HantoCoordinateImpl(from);
-			checkFly(board, origin, dest, onMove, type);
-		}
-		
-	}
-	
-	
 	/**
 	 * check if the piece can fly
 	 * @param board
@@ -58,7 +43,8 @@ public class FlyValidator extends MoveValidator{
 	 * @param type
 	 * @throws HantoException
 	 */
-	public void checkFly(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to,
+	@Override
+	public void checkMove(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to,
 			HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
 		checkButterflyPlayed(board, onMove, type);
 		checkEmptyDestination(board, to);		

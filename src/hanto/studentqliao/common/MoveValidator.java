@@ -72,7 +72,28 @@ public abstract class MoveValidator {
 	 * @param type
 	 * @throws HantoException
 	 */
-	public abstract void canMove(HantoBoard board, HantoCoordinate from, HantoCoordinate to,
+	public void canMove(HantoBoard board, HantoCoordinate from, HantoCoordinate to,
+			HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
+			final HantoCoordinateImpl dest = new HantoCoordinateImpl(to);
+			if(from == null){
+				checkPutPiece(board, dest, onMove, type);
+			}
+			else{
+				final HantoCoordinateImpl origin = new HantoCoordinateImpl(from);
+					checkMove(board, origin, dest, onMove, type);		
+			}			
+	}
+
+	/**
+	 * abstract class for each move
+	 * @param board
+	 * @param from
+	 * @param to
+	 * @param onMove
+	 * @param type
+	 * @throws HantoException
+	 */
+	public abstract void checkMove(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to, 
 			HantoPlayerColor onMove, HantoPieceType type) throws HantoException;
 	   
 

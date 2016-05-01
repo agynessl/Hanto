@@ -10,6 +10,7 @@
 package hanto.common;
 
 import hanto.studentqliao.delta.DeltaHantoTestGame;
+import hanto.studentqliao.epsilon.EpsilonHantoTestGame;
 
 public class HantoTestGameFactory {
 	private static final HantoTestGameFactory instance = new HantoTestGameFactory();
@@ -56,6 +57,8 @@ public class HantoTestGameFactory {
 		case DELTA_HANTO:
 			game = new DeltaHantoTestGame(movesFirst);
 			break;
+		case EPSILON_HANTO:
+			game = new EpsilonHantoTestGame(movesFirst);
 		default:
 			break;
 		}

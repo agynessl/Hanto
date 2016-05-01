@@ -31,19 +31,18 @@ import hanto.common.HantoPlayerColor;
  */
 public class HantoBoard{
 
-	private Map<HantoCoordinateImpl,HantoPiece> boardpieces = 
-			new Hashtable<HantoCoordinateImpl, HantoPiece>();
-	private final Hashtable <HantoPieceType, Integer> bluePieceCounter = 
-			new Hashtable<HantoPieceType, Integer>();
-	private final Hashtable <HantoPieceType, Integer> redPieceCounter = 
-			new Hashtable<HantoPieceType, Integer>();
+	private Map<HantoCoordinateImpl,HantoPiece> boardpieces;
+	private final Hashtable <HantoPieceType, Integer> bluePieceCounter;
+	private final Hashtable <HantoPieceType, Integer> redPieceCounter;
 	
 	
 	/**
 	 * Constructor for HantoBoard.
 	 */
 	public HantoBoard(){
-		
+		boardpieces = new Hashtable<HantoCoordinateImpl, HantoPiece>();
+		bluePieceCounter = new Hashtable<HantoPieceType, Integer>();
+		redPieceCounter = new Hashtable<HantoPieceType, Integer>();
 		for(HantoPieceType type: HantoPieceType.values()){
 			redPieceCounter.put(type, 0);
 			bluePieceCounter.put(type, 0);
@@ -55,6 +54,8 @@ public class HantoBoard{
 	 * @param board
 	 */
 	public HantoBoard(HantoBoard board){
+		bluePieceCounter = new Hashtable<HantoPieceType, Integer>();
+		redPieceCounter = new Hashtable<HantoPieceType, Integer>();
 		boardpieces = new Hashtable<HantoCoordinateImpl, HantoPiece>(board.boardpieces);
 		for(HantoPieceType type: HantoPieceType.values()){
 			redPieceCounter.put(type, board.getPieceCount(type, HantoPlayerColor.RED));
@@ -95,7 +96,6 @@ public class HantoBoard{
 	/**
 	 * Get the pieces that occupy the neighbors
 	 * @param coor
-	
 	 * @return List of hantopieces */
 	public List<HantoPiece> getNeighborPieces(HantoCoordinateImpl coor){
 		final List<HantoPiece> neighbors = new ArrayList<HantoPiece>();
@@ -229,6 +229,13 @@ public class HantoBoard{
 		return false;
 	}
 	
+	/**
+	 * get all occupied coordinates
+	 * @return
+	 */
+	public Set<HantoCoordinateImpl> getAllCoor(){
+		return boardpieces.keySet();
+	}
 	
 	/**
 	 * check if a coordinate is empty

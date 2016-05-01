@@ -34,7 +34,7 @@ public class GammaHantoGame extends HantoGameBase {
 	protected MoveValidator getMoveValidator(HantoPieceType type) {
 		MoveValidator mv = null;
 		if(type == HantoPieceType.BUTTERFLY || type == HantoPieceType.SPARROW){
-			mv = new ButterflyValidator(HantoGameID.GAMMA_HANTO);
+			mv = new WalkValidator(HantoGameID.GAMMA_HANTO);
 		}
 		return mv;
 	}

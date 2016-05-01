@@ -24,13 +24,13 @@ import hanto.common.HantoPlayerColor;
  * The implementation for ButterflyValidator
  * @version April 19, 2016
  */
-public class ButterflyValidator extends MoveValidator{
+public class WalkValidator extends MoveValidator{
 	
 	/**
 	 * constructor for butterflyValidator
 	 * @param id
 	 */
-	public ButterflyValidator(HantoGameID id) {
+	public WalkValidator(HantoGameID id) {
 		super(id);
 		// TODO Auto-generated constructor stub
 	}

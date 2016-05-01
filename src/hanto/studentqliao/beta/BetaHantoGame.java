@@ -15,7 +15,7 @@ package hanto.studentqliao.beta;
 import static hanto.common.HantoPieceType.BUTTERFLY;
 
 import hanto.common.*;
-import hanto.studentqliao.common.ButterflyValidator;
+import hanto.studentqliao.common.WalkValidator;
 import hanto.studentqliao.common.HantoCoordinateImpl;
 import hanto.studentqliao.common.HantoGameBase;
 import hanto.studentqliao.common.MoveValidator;
@@ -113,7 +113,7 @@ public class BetaHantoGame extends HantoGameBase
 	protected MoveValidator getMoveValidator(HantoPieceType type) {
 		MoveValidator mv = null;
 		if(type == HantoPieceType.BUTTERFLY || type == HantoPieceType.SPARROW){
-			mv = new ButterflyValidator(HantoGameID.BETA_HANTO);
+			mv = new WalkValidator(HantoGameID.BETA_HANTO);
 		}
 		return mv;
 	}

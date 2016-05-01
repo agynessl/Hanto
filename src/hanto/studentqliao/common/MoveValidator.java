@@ -29,6 +29,8 @@ public abstract class MoveValidator {
 	protected int MAX_BUTTERFLY = 0;
 	protected int MAX_SPARROW = 0;
 	protected int MAX_CRAB = 0;
+	protected int MAX_HORSE = 0;
+	protected HantoGameID game;
 	
 	/**
 	 * constructor for move validator
@@ -37,17 +39,27 @@ public abstract class MoveValidator {
 	protected MoveValidator(HantoGameID id){
 		switch(id){
 		case BETA_HANTO:
+			game = HantoGameID.BETA_HANTO;
 			MAX_BUTTERFLY = 1;
 			MAX_SPARROW = 5;
 			break;
 		case GAMMA_HANTO:
+			game = HantoGameID.GAMMA_HANTO;
 			MAX_BUTTERFLY = 1;
 			MAX_SPARROW = 5;
 			break;
 		case DELTA_HANTO:
+			game = HantoGameID.DELTA_HANTO;
 			MAX_BUTTERFLY = 1;
 			MAX_SPARROW = 4;
 			MAX_CRAB = 4;
+			break;
+		case EPSILON_HANTO:
+			game = HantoGameID.EPSILON_HANTO;
+			MAX_BUTTERFLY = 1;
+			MAX_SPARROW = 2;
+			MAX_CRAB = 6;
+			MAX_HORSE = 4;
 			break;
 		}
 	}
@@ -181,6 +193,10 @@ public abstract class MoveValidator {
 				throw new HantoException("exceed the crab pieces use");
 			}
 			break;
+		case HORSE:
+			if(board.getPieceCount(type, onMove) >= MAX_HORSE){
+				throw new HantoException("exceed the horse pieces use");
+			}
 			default:
 				return;
 		}

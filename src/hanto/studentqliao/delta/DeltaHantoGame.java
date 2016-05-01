@@ -16,11 +16,11 @@ import hanto.common.HantoGameID;
 import hanto.common.HantoPieceType;
 import hanto.common.HantoPlayerColor;
 import hanto.common.MoveResult;
-import hanto.studentqliao.common.ButterflyValidator;
-import hanto.studentqliao.common.CrabValidator;
+import hanto.studentqliao.common.WalkValidator;
+import hanto.studentqliao.common.RunValidator;
 import hanto.studentqliao.common.HantoGameBase;
 import hanto.studentqliao.common.MoveValidator;
-import hanto.studentqliao.common.SparrowValidator;
+import hanto.studentqliao.common.FlyValidator;
 
 /**
  * Implementation of Delta Hanto Game
@@ -42,13 +42,13 @@ public class DeltaHantoGame extends HantoGameBase{
 	protected MoveValidator getMoveValidator(HantoPieceType type) {
 		MoveValidator mv = null;
 		if(type == HantoPieceType.BUTTERFLY){
-			mv = new ButterflyValidator(HantoGameID.DELTA_HANTO);
+			mv = new WalkValidator(HantoGameID.DELTA_HANTO);
 		}
 		else if(type == HantoPieceType.CRAB){
-			mv = new CrabValidator(HantoGameID.DELTA_HANTO);
+			mv = new RunValidator(HantoGameID.DELTA_HANTO);
 		}
 		else if(type == HantoPieceType.SPARROW){
-			mv = new SparrowValidator(HantoGameID.DELTA_HANTO);
+			mv = new FlyValidator(HantoGameID.DELTA_HANTO);
 		}
 		return mv;
 	}

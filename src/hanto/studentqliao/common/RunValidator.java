@@ -24,14 +24,14 @@ import hanto.common.HantoPlayerColor;
  * @author Qiaoyu Liao
  * @version Apr 19, 2016
  */
-public class CrabValidator extends MoveValidator {
+public class RunValidator extends MoveValidator {
 	List<HantoCoordinateImpl> movable;
 	
 	/**
 	 * constructor for crab validator
 	 * @param id
 	 */
-	public CrabValidator(HantoGameID id){
+	public RunValidator(HantoGameID id){
 		super(id);
 		movable = new ArrayList<HantoCoordinateImpl>();
 	}
@@ -66,7 +66,7 @@ public class CrabValidator extends MoveValidator {
 		checkButterflyPlayed(board, onMove, type);
 		checkEmptyDestination(board, to);
 		checkPieceOnBoard(board, from, onMove, type);
-		
+
 		movable.add(from);
 		while(distanceCount < 4){
 			List<HantoCoordinateImpl> temp = new ArrayList<HantoCoordinateImpl>();

@@ -217,6 +217,26 @@ public abstract class HantoGameBase implements HantoGame {
 	 */
 	protected MoveResult checkResult(){
 		
+		checkWins();
+		
+		if(gameOver){
+			return (gameOver && blueWins && redWins) ? DRAW : 
+				(gameOver && blueWins) ? BLUE_WINS: 
+					(gameOver && redWins) ? RED_WINS :
+						DRAW;
+		}
+		
+		else{
+			return OK;
+		}
+		
+		
+	}
+	
+	/**
+	 * check if one side wins or end of game
+	 */
+	protected void checkWins(){
 		if(blueButterflyCoor != null){
 			if(board.getNeighborPieces(blueButterflyCoor).size() == 6){
 				redWins = true;
@@ -234,19 +254,6 @@ public abstract class HantoGameBase implements HantoGame {
 		if(moveCounter > MAX_TURN){
 			gameOver = true;
 		}
-		
-		if(gameOver){
-			return (gameOver && blueWins && redWins) ? DRAW : 
-				(gameOver && blueWins) ? BLUE_WINS: 
-					(gameOver && redWins) ? RED_WINS :
-						DRAW;
-		}
-		
-		else{
-			return OK;
-		}
-		
-		
 	}
 	
 	

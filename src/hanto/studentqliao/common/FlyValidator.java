@@ -24,13 +24,13 @@ import hanto.common.HantoPlayerColor;
  * @author Qiaoyu Liao
  * @version Apr 19, 2016
  */
-public class SparrowValidator extends MoveValidator{
+public class FlyValidator extends MoveValidator{
 
 	/**
 	 * constructor
 	 * @param id
 	 */
-	public SparrowValidator(HantoGameID id) {
+	public FlyValidator(HantoGameID id) {
 		super(id);
 	}
 
@@ -61,10 +61,26 @@ public class SparrowValidator extends MoveValidator{
 	public void checkFly(HantoBoard board, HantoCoordinateImpl from, HantoCoordinateImpl to,
 			HantoPlayerColor onMove, HantoPieceType type) throws HantoException{
 		checkButterflyPlayed(board, onMove, type);
-		checkEmptyDestination(board, to);
+		checkEmptyDestination(board, to);		
 		checkPieceOnBoard(board, from, onMove, type);
 		checkConnected(board, from, to);
+		if(game == HantoGameID.EPSILON_HANTO){
+			checkDistance(from,to);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param from
+	 * @param to
+	 * @throws HantoException
+	 */
+	public void checkDistance(HantoCoordinateImpl from,
+			HantoCoordinateImpl to)throws HantoException{
 		
+		if(from.getDistance(to) > 4){
+			throw new HantoException("The distance of fly should be less than 4");
+		}
 	}
 	
 

@@ -14,6 +14,7 @@ import hanto.common.*;
 
 import hanto.studentqliao.beta.BetaHantoGame;
 import hanto.studentqliao.delta.DeltaHantoGame;
+import hanto.studentqliao.epsilon.EpsilonHantoGame;
 import hanto.studentqliao.gamma.GammaHantoGame; 
 
 /**
@@ -75,6 +76,11 @@ public class HantoGameFactory
 			case DELTA_HANTO:
 				game = new DeltaHantoGame(movesFirst);
 				break;
+				
+			case EPSILON_HANTO:
+				game = new EpsilonHantoGame(movesFirst);
+				break;
+				
 		default:
 			break;
 		}

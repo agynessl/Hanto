@@ -10,7 +10,6 @@
  *******************************************************************************/
 package hanto.studentqliao.delta;
 
-
 import static hanto.common.HantoPieceType.*;
 import static hanto.common.MoveResult.*;
 import static hanto.common.HantoPlayerColor.*;

@@ -41,7 +41,7 @@ import org.junit.Test;
 
 /**
  * Test cases for EpsilonHanto
- * 
+ * Qiaoyu Liao
  * @version Oct 11, 2014
  */
 public class EpsilonHantoMasterTest {

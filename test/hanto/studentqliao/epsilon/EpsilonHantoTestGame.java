@@ -21,10 +21,9 @@ import hanto.common.MoveResult;
 import hanto.studentqliao.HantoGameFactory;
 
 /**
- * Delta hanto test game class
- * 
- * @author 
- * 
+ * Epsilon hanto test game class
+ *  Apr 30, 2016
+ * @author  Qiaoyu Liao
  */
 public class EpsilonHantoTestGame implements HantoTestGame{
 	
@@ -32,7 +31,7 @@ public class EpsilonHantoTestGame implements HantoTestGame{
 	private final EpsilonHantoGame testGame;
 
 	/**
-	 * Constructor of the DeltaHantoTestGame
+	 * Constructor of the EpsilonHantoTestGame
 	 */
 	public EpsilonHantoTestGame(HantoPlayerColor movesFirst) {
 		testGame = (EpsilonHantoGame) HantoGameFactory.getInstance().makeHantoGame(

@@ -25,6 +25,11 @@ import hanto.common.HantoPieceType;
 import hanto.common.HantoPlayerColor;
 import hanto.common.MoveResult;
 
+/**
+ * Delta Hanto Test
+ * @author agyness
+ *
+ */
 public class DeltaHantoGameTest {
 	
 	class TestHantoCoordinate implements HantoCoordinate

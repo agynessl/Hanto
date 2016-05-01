@@ -22,7 +22,6 @@ import hanto.studentqliao.HantoGameFactory;
 
 /**
  * Delta hanto test game class
- * 
  * @author 
  * 
  */

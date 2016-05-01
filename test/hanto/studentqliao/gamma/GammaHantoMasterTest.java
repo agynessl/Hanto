@@ -21,7 +21,7 @@ import hanto.studentqliao.common.HantoCoordinateImpl;
 import org.junit.*;
 
 /**
- * Test cases for Beta Hanto.
+ * Test cases for Gamma Hanto.
  * @version Apr 7, 2016
  * @author Qiaoyu Liao
  */

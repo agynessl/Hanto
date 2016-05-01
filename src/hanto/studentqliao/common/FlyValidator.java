@@ -13,7 +13,7 @@ package hanto.studentqliao.common;
 
 
 
-import hanto.common.HantoCoordinate;
+
 import hanto.common.HantoException;
 import hanto.common.HantoGameID;
 import hanto.common.HantoPieceType;

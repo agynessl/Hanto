@@ -22,6 +22,7 @@ import java.util.Map;
 import hanto.common.HantoCoordinate;
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
+import hanto.common.HantoGameID;
 import hanto.common.HantoPiece;
 import hanto.common.HantoPieceType;
 import hanto.common.HantoPlayerColor;
@@ -33,6 +34,7 @@ import hanto.common.MoveResult;
  * @version Apr 19, 2016
  */
 public abstract class HantoGameBase implements HantoGame {
+	protected HantoGameID gameVersion;
 	protected HantoBoard board;
 	
 	protected int moveCounter;
@@ -45,13 +47,6 @@ public abstract class HantoGameBase implements HantoGame {
 	
 	protected HantoCoordinateImpl blueButterflyCoor;
 	protected HantoCoordinateImpl redButterflyCoor;
-	
-	/**
-	 * get the move validator for specific type
-	 * @param type
-	 * @return MoveValidator for the piece type
-	 */
-	protected abstract MoveValidator getMoveValidator(HantoPieceType type);
 	
 	/**
 	 * constructor for hanto base 
@@ -72,6 +67,25 @@ public abstract class HantoGameBase implements HantoGame {
 	@Override
 	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from, HantoCoordinate to)
 			throws HantoException {
+		switch(gameVersion){
+		case DELTA_HANTO:
+			if(pieceType == null && from == null && to == null){
+				gameOver = true;
+				return onMove == HantoPlayerColor.RED ? MoveResult.BLUE_WINS : MoveResult.RED_WINS;
+			}
+			break;
+			
+		case EPSILON_HANTO:
+			//check resign
+			if(pieceType == null && from == null && to == null){
+				checkResign();
+				return onMove == HantoPlayerColor.RED ? MoveResult.BLUE_WINS : MoveResult.RED_WINS;
+			}
+			break;
+			
+			default:
+				break;
+		}
 		//game end check
 		checkGameEnd();
 		//move check
@@ -95,6 +109,7 @@ public abstract class HantoGameBase implements HantoGame {
 		}
 	}
 	
+	
 	/**
 	 * check the butterfly placed by fourth move
 	 * @throws HantoException
@@ -109,6 +124,7 @@ public abstract class HantoGameBase implements HantoGame {
 			}
 		}
 	}
+	
 	
 	/**
 	 * validate the move
@@ -131,7 +147,7 @@ public abstract class HantoGameBase implements HantoGame {
 		if(pieceType != BUTTERFLY) {
 			checkButterflyMovesByFourthMove(); 
 		}
-		if(isFirstMove()){
+		if(firstMove){
 			firstMoveValidator(pieceType, from, to);
 		}
 		else{
@@ -143,6 +159,7 @@ public abstract class HantoGameBase implements HantoGame {
 		}
 
 	}
+	
 	
 	/**
 	 * validator for the first turn move
@@ -193,6 +210,63 @@ public abstract class HantoGameBase implements HantoGame {
 		}
 	}
 	
+	
+	/**
+	 * get the move validator for specific type
+	 * @param type
+	 * @return MoveValidator for the piece type
+	 */
+	protected MoveValidator getMoveValidator(HantoPieceType type){
+		MoveValidator mv = null;
+		switch(gameVersion){
+		case BETA_HANTO:
+			if(type == HantoPieceType.BUTTERFLY || type == HantoPieceType.SPARROW){
+				mv = new WalkValidator(HantoGameID.BETA_HANTO);
+			}
+		break;
+		
+		case GAMMA_HANTO:
+			if(type == HantoPieceType.BUTTERFLY || type == HantoPieceType.SPARROW){
+				mv = new WalkValidator(HantoGameID.GAMMA_HANTO);
+			}
+			break;
+			
+		case DELTA_HANTO:
+			if(type == HantoPieceType.BUTTERFLY){
+				mv = new WalkValidator(HantoGameID.DELTA_HANTO);
+			}
+			else if(type == HantoPieceType.CRAB){
+				mv = new RunValidator(HantoGameID.DELTA_HANTO);
+			}
+			else if(type == HantoPieceType.SPARROW){
+				mv = new FlyValidator(HantoGameID.DELTA_HANTO);
+			}
+			break;
+			
+		case EPSILON_HANTO:
+			if(type == HantoPieceType.BUTTERFLY){
+				mv = new WalkValidator(HantoGameID.EPSILON_HANTO);
+			}
+			else if(type == HantoPieceType.CRAB){
+				mv = new WalkValidator(HantoGameID.EPSILON_HANTO);
+			}
+			else if(type == HantoPieceType.SPARROW){
+				mv = new FlyValidator(HantoGameID.EPSILON_HANTO);
+			}
+			else if(type == HantoPieceType.HORSE){
+				mv = new JumpValidator(HantoGameID.EPSILON_HANTO);
+			}
+			break;
+			
+			default:
+				break;
+		}
+		
+		return mv;
+	}
+	
+	
+	
 	/**
 	 * increment the statistic
 	 */
@@ -204,12 +278,15 @@ public abstract class HantoGameBase implements HantoGame {
 		case RED:
 			onMove = HantoPlayerColor.BLUE;
 			moveCounter++;
-			if(isFirstMove()){
+			if(firstMove){
 				setFirstMove(false);
 			}
 			break;
 		}
 	}
+	
+	
+	
 	
 	/**
 	 * check the result of the game
@@ -224,14 +301,23 @@ public abstract class HantoGameBase implements HantoGame {
 				(gameOver && blueWins) ? BLUE_WINS: 
 					(gameOver && redWins) ? RED_WINS :
 						DRAW;
-		}
-		
+		}		
 		else{
 			return OK;
-		}
-		
-		
+		}		
 	}
+	
+	
+	
+	/**
+	 * check resign if possible moves left
+	 * @throws HantoException
+	 */
+	protected void checkResign()throws HantoException{
+		//do nothing for version other than epsilon
+	}
+	
+	
 	
 	/**
 	 * check if one side wins or end of game
@@ -276,6 +362,8 @@ public abstract class HantoGameBase implements HantoGame {
 	public HantoPiece getPieceAt(HantoCoordinate where) {
 		return board.getPieceAt(where);
 	}
+	
+	
 
 	@Override
 	public String getPrintableBoard() {
@@ -288,6 +376,8 @@ public abstract class HantoGameBase implements HantoGame {
 		}
 		return s;
 	}
+	
+	
 	
 	/**
 	 * place the Hanto Piece on Board without checking for testing
@@ -312,6 +402,9 @@ public abstract class HantoGameBase implements HantoGame {
 			board.putPieceAt(new HantoPieceImpl(player, pieceType), to);
 	}
 
+	
+	
+	
 	/**
 	 * Set the turn number for testing
 	 * @param num 
@@ -319,6 +412,8 @@ public abstract class HantoGameBase implements HantoGame {
 	public void setTurnNumber(int num) {
 		moveCounter = num;
 	}
+	
+	
 	
 	/**
 	 * Set the current player color for testing
@@ -328,9 +423,13 @@ public abstract class HantoGameBase implements HantoGame {
 		onMove = currentPlayerColor;
 	}
 
+	
+	
 	public boolean isFirstMove() {
 		return firstMove;
 	}
+	
+	
 
 	public void setFirstMove(boolean firstMove) {
 		this.firstMove = firstMove;

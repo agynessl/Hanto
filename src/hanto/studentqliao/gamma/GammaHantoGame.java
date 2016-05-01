@@ -26,20 +26,9 @@ public class GammaHantoGame extends HantoGameBase {
 	 */
 	public GammaHantoGame(HantoPlayerColor movesFirst){
 		super(movesFirst);
+		gameVersion = HantoGameID.GAMMA_HANTO;
 		MAX_TURN = 20;
 	}
-
-
-	@Override
-	protected MoveValidator getMoveValidator(HantoPieceType type) {
-		MoveValidator mv = null;
-		if(type == HantoPieceType.BUTTERFLY || type == HantoPieceType.SPARROW){
-			mv = new WalkValidator(HantoGameID.GAMMA_HANTO);
-		}
-		return mv;
-	}
-	
-	
 	
 
 }

@@ -15,7 +15,6 @@ package hanto.studentqliao.beta;
 import static hanto.common.HantoPieceType.BUTTERFLY;
 
 import hanto.common.*;
-import hanto.studentqliao.common.WalkValidator;
 import hanto.studentqliao.common.HantoCoordinateImpl;
 import hanto.studentqliao.common.HantoGameBase;
 import hanto.studentqliao.common.MoveValidator;
@@ -34,6 +33,7 @@ public class BetaHantoGame extends HantoGameBase
 
 	public BetaHantoGame(HantoPlayerColor movesFirst){
 		super(movesFirst);
+		gameVersion = HantoGameID.BETA_HANTO;
 		MAX_TURN = 6;
 		MAX_BUTTERFLY = 1;
 		MAX_SPARROW = 5;
@@ -74,7 +74,7 @@ public class BetaHantoGame extends HantoGameBase
 	}
 	
 	/**
-	 * 
+	 * put validator for beta hanto
 	 * @param pieceType
 	 * @param to
 	 * @throws HantoException
@@ -104,19 +104,10 @@ public class BetaHantoGame extends HantoGameBase
 				throw new HantoException("exceed the sparrow pieces use");
 			}
 			break;
+		default:
+			break;	
 		}
-	
+			
 	}
-	
-
-	@Override
-	protected MoveValidator getMoveValidator(HantoPieceType type) {
-		MoveValidator mv = null;
-		if(type == HantoPieceType.BUTTERFLY || type == HantoPieceType.SPARROW){
-			mv = new WalkValidator(HantoGameID.BETA_HANTO);
-		}
-		return mv;
-	}
-	
 
 }

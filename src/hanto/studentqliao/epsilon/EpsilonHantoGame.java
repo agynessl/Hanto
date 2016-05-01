@@ -14,22 +14,22 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-import hanto.common.HantoCoordinate;
+
 import hanto.common.HantoException;
 import hanto.common.HantoGameID;
 import hanto.common.HantoPiece;
 import hanto.common.HantoPieceType;
 import hanto.common.HantoPlayerColor;
 import hanto.common.HantoPrematureResignationException;
-import hanto.common.MoveResult;
-import hanto.studentqliao.common.FlyValidator;
+
+
 import hanto.studentqliao.common.HantoBoard;
 import hanto.studentqliao.common.HantoCoordinateImpl;
 import hanto.studentqliao.common.HantoGameBase;
 import hanto.studentqliao.common.HantoPieceImpl;
-import hanto.studentqliao.common.JumpValidator;
-import hanto.studentqliao.common.MoveValidator;
-import hanto.studentqliao.common.WalkValidator;
+
+
+
 import hanto.tournament.HantoMoveRecord;
 
 /**
@@ -40,56 +40,20 @@ public class EpsilonHantoGame extends HantoGameBase {
 
 	public EpsilonHantoGame(HantoPlayerColor movesFirst) {
 		super(movesFirst);
-	}
-	
-	@Override
-	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from, HantoCoordinate to)
-			throws HantoException {
-		
-		//check resign
-		if(pieceType == null && from == null && to == null){
-			checkResign();
-			return onMove == HantoPlayerColor.RED ? MoveResult.BLUE_WINS : MoveResult.RED_WINS;
-		}		
-		//game end check
-		checkGameEnd();
-		//move check
-		validateMove(pieceType, from, to);
-		//make the move
-		doMove(pieceType, from, to);
-		//increment the count
-		incrementMove();
-		//return result
-		return checkResult();
-	}
-
-	@Override
-	protected MoveValidator getMoveValidator(HantoPieceType type) {
-		MoveValidator mv = null;
-		if(type == HantoPieceType.BUTTERFLY){
-			mv = new WalkValidator(HantoGameID.EPSILON_HANTO);
-		}
-		else if(type == HantoPieceType.CRAB){
-			mv = new WalkValidator(HantoGameID.EPSILON_HANTO);
-		}
-		else if(type == HantoPieceType.SPARROW){
-			mv = new FlyValidator(HantoGameID.EPSILON_HANTO);
-		}
-		else if(type == HantoPieceType.HORSE){
-			mv = new JumpValidator(HantoGameID.EPSILON_HANTO);
-		}
-		return mv;
+		gameVersion = HantoGameID.EPSILON_HANTO;
 	}
 	
 	/**
 	 * check if still moves left
 	 * @throws HantoException
 	 */
+	@Override
 	protected void checkResign() throws HantoException{
 		if(findAllValidMoves(onMove).size() != 0){
 			throw new HantoPrematureResignationException();
 		}
 	}
+	
 	
 	/**
 	 * find all the valid move in this game
@@ -97,17 +61,16 @@ public class EpsilonHantoGame extends HantoGameBase {
 	 * @return collection of valid moves
 	 */
 	public Collection<HantoMoveRecord> findAllValidMoves(HantoPlayerColor thisMove){
-		
+		Collection<HantoMoveRecord> availableMove = new LinkedList<HantoMoveRecord>();
 		Set<HantoCoordinateImpl> availableCoor = new HashSet<HantoCoordinateImpl>();
-		Collection<HantoMoveRecord> possibleMove = new LinkedList<HantoMoveRecord>();
-		
+			
 		//find the origin put move
 		if(moveCounter == 1 && thisMove == movesFirst){
-			possibleMove.add(new HantoMoveRecord(HantoPieceType.BUTTERFLY, null, new HantoCoordinateImpl(0, 0)));
-			possibleMove.add(new HantoMoveRecord(HantoPieceType.CRAB, null, new HantoCoordinateImpl(0, 0)));
-			possibleMove.add(new HantoMoveRecord(HantoPieceType.SPARROW, null, new HantoCoordinateImpl(0, 0)));
-			possibleMove.add(new HantoMoveRecord(HantoPieceType.HORSE, null, new HantoCoordinateImpl(0, 0)));
-			return possibleMove;
+			availableMove.add(new HantoMoveRecord(HantoPieceType.BUTTERFLY, null, new HantoCoordinateImpl(0, 0)));
+			availableMove.add(new HantoMoveRecord(HantoPieceType.CRAB, null, new HantoCoordinateImpl(0, 0)));
+			availableMove.add(new HantoMoveRecord(HantoPieceType.SPARROW, null, new HantoCoordinateImpl(0, 0)));
+			availableMove.add(new HantoMoveRecord(HantoPieceType.HORSE, null, new HantoCoordinateImpl(0, 0)));
+			return availableMove;
 		}
 		
 		//find all adjacent place
@@ -120,7 +83,7 @@ public class EpsilonHantoGame extends HantoGameBase {
 			for(HantoCoordinateImpl to: availableCoor){
 				try{
 					validateMove(type, null, to);	
-					possibleMove.add(new HantoMoveRecord(type, null, to));
+					availableMove.add(new HantoMoveRecord(type, null, to));
 				}catch(Exception e){
 					continue;
 				}				
@@ -134,7 +97,7 @@ public class EpsilonHantoGame extends HantoGameBase {
 				for(HantoCoordinateImpl to: availableCoor){
 					try{
 						validateMove(piece.getType(),from,to);
-						possibleMove.add(new HantoMoveRecord(piece.getType(), from, to));
+						availableMove.add(new HantoMoveRecord(piece.getType(), from, to));
 					}catch(Exception e){
 						continue;
 					}
@@ -143,8 +106,10 @@ public class EpsilonHantoGame extends HantoGameBase {
 		}
 		
 		// return all that found
-		return possibleMove;
+		return availableMove;
 	}
+	
+	
 	
 	/**
 	 * give rating of this move for compare

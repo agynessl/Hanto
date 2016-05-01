@@ -229,13 +229,18 @@ public class EpsilonHantoMasterTest {
 	@Test
 	public void blueWins() throws HantoException {
 		final PieceLocationPair[] board = new PieceLocationPair[] {
-				plPair(BLUE, BUTTERFLY, 0, 0), plPair(RED, BUTTERFLY, 0, 1),
-				plPair(BLUE, HORSE, 0, -1), plPair(RED, HORSE, -1, 2), plPair(BLUE, CRAB, -1, 1),
-				plPair(RED, CRAB, 1, 1), plPair(BLUE, SPARROW, -1, 0), plPair(RED, SPARROW, 1, 0)
+				plPair(BLUE, BUTTERFLY, 0, 0), 
+				plPair(RED, BUTTERFLY, 0, 1),
+				plPair(BLUE, HORSE, 0, -1), 
+				plPair(RED, HORSE, -1, 2), 
+				plPair(BLUE, CRAB, -1, 1),
+				plPair(RED, CRAB, 1, 1), 
+				plPair(BLUE, SPARROW, -1, 0), 
+				plPair(RED, SPARROW, 1, 0)
 		};
 		testGame.initializeBoard(board);
 		testGame.setPlayerMoving(BLUE);
-		testGame.setTurnNumber(6);
+		testGame.setTurnNumber(5);
 		assertEquals(BLUE_WINS, game.makeMove(HORSE, makeCoordinate(0, -1), makeCoordinate(0, 2)));
 	}
 
@@ -247,18 +252,18 @@ public class EpsilonHantoMasterTest {
 	}
 	
 	@Test
-	public void testValidHorseJumpAttempts() throws HantoException {
+	public void validHorseJumpAttempts() throws HantoException {
 		HantoTestGame.PieceLocationPair[] initialPieces = new HantoTestGame.PieceLocationPair[] {
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.BUTTERFLY, 0, 0),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 0, 1),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.HORSE, 0, -1),
-				plPair(HantoPlayerColor.RED, HantoPieceType.HORSE, 0, 2),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.HORSE, 0, -2),
-				plPair(HantoPlayerColor.RED, HantoPieceType.BUTTERFLY, 1, -1)
+				plPair(BLUE, BUTTERFLY, 0, 0),
+				plPair(RED, CRAB, 0, 1),
+				plPair(BLUE, HORSE, 0, -1),
+				plPair(RED, HORSE, 0, 2),
+				plPair(BLUE, HORSE, 0, -2),
+				plPair(RED, BUTTERFLY, 1, -1)
 		};
 		testGame.initializeBoard(initialPieces);
-		testGame.setTurnNumber(3);
-		testGame.setPlayerMoving(HantoPlayerColor.RED);
+		testGame.setTurnNumber(4);
+		testGame.setPlayerMoving(RED);
 
 		assertEquals(MoveResult.OK,
 				game.makeMove(HantoPieceType.HORSE, makeCoordinate(0, 2), makeCoordinate(0, -3)));
@@ -266,17 +271,17 @@ public class EpsilonHantoMasterTest {
 	
 
 	@Test
-	public void testValidHorseVertialJumpAttempts() throws HantoException {
+	public void validHorseVertialJumpAttempts() throws HantoException {
 		HantoTestGame.PieceLocationPair[] initialPieces = new HantoTestGame.PieceLocationPair[] {
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.BUTTERFLY, 0, 0),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 1, 0),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.HORSE, 2, 0),
-				plPair(HantoPlayerColor.RED, HantoPieceType.HORSE, -1, 0),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.HORSE, -2, 0)
+				plPair(BLUE, HantoPieceType.BUTTERFLY, 0, 0),
+				plPair(RED, HantoPieceType.CRAB, 1, 0),
+				plPair(BLUE, HantoPieceType.HORSE, 2, 0),
+				plPair(RED, HantoPieceType.HORSE, -1, 0),
+				plPair(BLUE, HantoPieceType.HORSE, -2, 0)
 		};
 		testGame.initializeBoard(initialPieces);
 		testGame.setTurnNumber(3);
-		testGame.setPlayerMoving(HantoPlayerColor.BLUE);
+		testGame.setPlayerMoving(BLUE);
 
 		assertEquals(MoveResult.OK,
 				game.makeMove(HantoPieceType.HORSE, makeCoordinate(-2, 0), makeCoordinate(3, 0)));
@@ -284,37 +289,37 @@ public class EpsilonHantoMasterTest {
 
 
 	@Test(expected = HantoException.class)
-	public void testInvalidHorseJumpAttempts() throws HantoException {
+	public void invalidHorseJumpAttempts() throws HantoException {
 		HantoTestGame.PieceLocationPair[] initialPieces = new HantoTestGame.PieceLocationPair[] {
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.BUTTERFLY, 0, 0),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 0, 1),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.HORSE, 0, -1),
-				plPair(HantoPlayerColor.RED, HantoPieceType.HORSE, 0, 2),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.HORSE, 0, -2)
+				plPair(BLUE, HantoPieceType.BUTTERFLY, 0, 0),
+				plPair(RED, HantoPieceType.CRAB, 0, 1),
+				plPair(BLUE, HantoPieceType.HORSE, 0, -1),
+				plPair(RED, HantoPieceType.HORSE, 0, 2),
+				plPair(BLUE, HantoPieceType.HORSE, 0, -2)
 		};
 		testGame.initializeBoard(initialPieces);
 		testGame.setTurnNumber(3);
-		testGame.setPlayerMoving(HantoPlayerColor.RED);
+		testGame.setPlayerMoving(RED);
 
 		game.makeMove(HantoPieceType.HORSE, makeCoordinate(0, 2), makeCoordinate(1, -2));
 	}
 
 
 	@Test
-	public void testThatPieceMovementIsWithinLimit() throws HantoException {
+	public void validPieceMovementIsWithinLimit() throws HantoException {
 		HantoTestGame.PieceLocationPair[] initialPieces = new HantoTestGame.PieceLocationPair[] {
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.BUTTERFLY, 0, 0),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 0, 1),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.SPARROW, 0, -1),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 1, 0),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.SPARROW, -1, 0),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 1, 1),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.HORSE, 0, -2),
-				plPair(HantoPlayerColor.RED, HantoPieceType.BUTTERFLY, -1, 1)
+				plPair(BLUE, HantoPieceType.BUTTERFLY, 0, 0),
+				plPair(RED, HantoPieceType.CRAB, 0, 1),
+				plPair(BLUE, HantoPieceType.SPARROW, 0, -1),
+				plPair(RED, HantoPieceType.CRAB, 1, 0),
+				plPair(BLUE, HantoPieceType.SPARROW, -1, 0),
+				plPair(RED, HantoPieceType.CRAB, 1, 1),
+				plPair(BLUE, HantoPieceType.HORSE, 0, -2),
+				plPair(RED, HantoPieceType.BUTTERFLY, -1, 1)
 		};
 		testGame.initializeBoard(initialPieces);
 		testGame.setTurnNumber(8);
-		testGame.setPlayerMoving(HantoPlayerColor.RED);
+		testGame.setPlayerMoving(RED);
 
 		assertEquals(MoveResult.OK,
 				game.makeMove(HantoPieceType.CRAB, makeCoordinate(1, 1), makeCoordinate(2, 0))); // crab
@@ -334,46 +339,46 @@ public class EpsilonHantoMasterTest {
 	@Test(expected = HantoException.class)
 	public void testThatButterflyExceedingWalkingLimitIsNotAllowed() throws HantoException {
 		HantoTestGame.PieceLocationPair[] initialPieces = new HantoTestGame.PieceLocationPair[] {
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.BUTTERFLY, 0, 0),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 0, 1),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.SPARROW, 0, 2)
+				plPair(BLUE, HantoPieceType.BUTTERFLY, 0, 0),
+				plPair(RED, HantoPieceType.CRAB, 0, 1),
+				plPair(BLUE, HantoPieceType.SPARROW, 0, 2)
 		};
 		testGame.initializeBoard(initialPieces);
 		testGame.setTurnNumber(3);
-		testGame.setPlayerMoving(HantoPlayerColor.BLUE);
+		testGame.setPlayerMoving(BLUE);
 
 		game.makeMove(HantoPieceType.BUTTERFLY, makeCoordinate(0, 0), makeCoordinate(1, 1));
 	}
 
 
 	@Test(expected = HantoException.class)
-	public void testThatCrabExceedingWalkingLimitIsNotAllowed() throws HantoException {
+	public void crabExceedingWalkingLimit() throws HantoException {
 		HantoTestGame.PieceLocationPair[] initialPieces = new HantoTestGame.PieceLocationPair[] {
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 0),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 0, 1),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.SPARROW, 0, 2)
+				plPair(BLUE, HantoPieceType.CRAB, 0, 0),
+				plPair(RED, HantoPieceType.CRAB, 0, 1),
+				plPair(BLUE, HantoPieceType.SPARROW, 0, 2)
 		};
 		testGame.initializeBoard(initialPieces);
 		testGame.setTurnNumber(3);
-		testGame.setPlayerMoving(HantoPlayerColor.BLUE);
+		testGame.setPlayerMoving(BLUE);
 
 		game.makeMove(HantoPieceType.CRAB, makeCoordinate(0, 0), makeCoordinate(1, 1));
 	}
 
 
 	@Test(expected = HantoException.class)
-	public void testThatExceedingFlyingLimitIsNotAllowed() throws HantoException {
+	public void sparrowExceedingFlyingLimit() throws HantoException {
 		HantoTestGame.PieceLocationPair[] initialPieces = new HantoTestGame.PieceLocationPair[] {
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 0),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 0, 1),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 2),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 0, -1),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, -2),
-				plPair(HantoPlayerColor.RED, HantoPieceType.SPARROW, 1, -3)
+				plPair(BLUE, HantoPieceType.CRAB, 0, 0),
+				plPair(RED, HantoPieceType.CRAB, 0, 1),
+				plPair(BLUE, HantoPieceType.CRAB, 0, 2),
+				plPair(RED, HantoPieceType.CRAB, 0, -1),
+				plPair(BLUE, HantoPieceType.CRAB, 0, -2),
+				plPair(RED, HantoPieceType.SPARROW, 1, -3)
 		};
 		testGame.initializeBoard(initialPieces);
 		testGame.setTurnNumber(3);
-		testGame.setPlayerMoving(HantoPlayerColor.RED);
+		testGame.setPlayerMoving(RED);
 
 		game.makeMove(HantoPieceType.SPARROW, makeCoordinate(1, -3),
 				makeCoordinate(0, 3));
@@ -381,18 +386,18 @@ public class EpsilonHantoMasterTest {
 
 
 	@Test(expected = HantoException.class)
-	public void testThatExceedingJumpingLimitIsNotAllowed() throws HantoException {
+	public void horseExceedingJumpingLimit() throws HantoException {
 		HantoTestGame.PieceLocationPair[] initialPieces = new HantoTestGame.PieceLocationPair[] {
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 0),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 0, 1),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 2),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 0, -1),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, -2),
-				plPair(HantoPlayerColor.RED, HantoPieceType.HORSE, 0, -3)
+				plPair(BLUE, HantoPieceType.CRAB, 0, 0),
+				plPair(RED, HantoPieceType.CRAB, 0, 1),
+				plPair(BLUE, HantoPieceType.CRAB, 0, 2),
+				plPair(RED, HantoPieceType.CRAB, 0, -1),
+				plPair(BLUE, HantoPieceType.CRAB, 0, -2),
+				plPair(RED, HantoPieceType.HORSE, 0, -3)
 		};
 		testGame.initializeBoard(initialPieces);
 		testGame.setTurnNumber(5);
-		testGame.setPlayerMoving(HantoPlayerColor.BLUE);
+		testGame.setPlayerMoving(BLUE);
 
 		game.makeMove(HantoPieceType.HORSE, makeCoordinate(0, -3), makeCoordinate(0, 3));
 	}
@@ -404,100 +409,100 @@ public class EpsilonHantoMasterTest {
 
 	
 	@Test(expected = HantoPrematureResignationException.class)
-	public void testInvalidResignationAttempt() throws HantoException {
+	public void invalidResignationAttempt() throws HantoException {
 		HantoTestGame.PieceLocationPair[] initialPieces = new HantoTestGame.PieceLocationPair[] {
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 0),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 0, 1),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 2),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 0, -1),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, -2),
-				plPair(HantoPlayerColor.RED, HantoPieceType.HORSE, 0, -3)
+				plPair(BLUE, HantoPieceType.CRAB, 0, 0),
+				plPair(RED, HantoPieceType.CRAB, 0, 1),
+				plPair(BLUE, HantoPieceType.CRAB, 0, 2),
+				plPair(RED, HantoPieceType.CRAB, 0, -1),
+				plPair(BLUE, HantoPieceType.CRAB, 0, -2),
+				plPair(RED, HantoPieceType.HORSE, 0, -3)
 		};
 		testGame.initializeBoard(initialPieces);
 		testGame.setTurnNumber(4);
-		testGame.setPlayerMoving(HantoPlayerColor.BLUE);
+		testGame.setPlayerMoving(BLUE);
 
 		game.makeMove(null, null, null);
 	}
 	
 
 	@Test(expected = HantoPrematureResignationException.class)
-	public void testPrematureResignationAttemptWithNoPieceToPlace() throws HantoException {
+	public void invalidResignationAttemptWithNoPieceToPlace() throws HantoException {
 		HantoTestGame.PieceLocationPair[] initialPieces = new HantoTestGame.PieceLocationPair[] {
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.BUTTERFLY, 0, 0),
-				plPair(HantoPlayerColor.RED, HantoPieceType.BUTTERFLY, -1, 1),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 1),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 2),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 3),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 4),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 5),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 6),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.SPARROW, 0, 7),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.SPARROW, 0, 8),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.HORSE, 0, 9),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.HORSE, 0, 10),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.HORSE, 0, 11),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.HORSE, 0, 12),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 1, 0),
+				plPair(BLUE, HantoPieceType.BUTTERFLY, 0, 0),
+				plPair(RED, HantoPieceType.BUTTERFLY, -1, 1),
+				plPair(BLUE, HantoPieceType.CRAB, 0, 1),
+				plPair(BLUE, HantoPieceType.CRAB, 0, 2),
+				plPair(BLUE, HantoPieceType.CRAB, 0, 3),
+				plPair(BLUE, HantoPieceType.CRAB, 0, 4),
+				plPair(BLUE, HantoPieceType.CRAB, 0, 5),
+				plPair(BLUE, HantoPieceType.CRAB, 0, 6),
+				plPair(BLUE, HantoPieceType.SPARROW, 0, 7),
+				plPair(BLUE, HantoPieceType.SPARROW, 0, 8),
+				plPair(BLUE, HantoPieceType.HORSE, 0, 9),
+				plPair(BLUE, HantoPieceType.HORSE, 0, 10),
+				plPair(BLUE, HantoPieceType.HORSE, 0, 11),
+				plPair(BLUE, HantoPieceType.HORSE, 0, 12),
+				plPair(RED, HantoPieceType.CRAB, 1, 0),
 		};
 		testGame.initializeBoard(initialPieces);
 		testGame.setTurnNumber(25);
-		testGame.setPlayerMoving(HantoPlayerColor.BLUE);
+		testGame.setPlayerMoving(BLUE);
 		testGame.makeMove(null, null, null);
 
 	}
 
 
 	@Test
-	public void testValidResignationAttempt() throws HantoException {
+	public void blueValidResignationAttempt() throws HantoException {
 		// Each allowed up to 6 crabs, 4 horses, 2 sparrows, and 1 butterfly
 		HantoTestGame.PieceLocationPair[] initialPieces = new HantoTestGame.PieceLocationPair[] {
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.BUTTERFLY, 0, 0),
-				plPair(HantoPlayerColor.RED, HantoPieceType.BUTTERFLY, 0, -1),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 1),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 2),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 3),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 4),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 5),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 6),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.SPARROW, 0, 7),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.SPARROW, 0, 8),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.HORSE, 0, 9),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.HORSE, 0, 10),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.HORSE, 0, 11),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.HORSE, 0, 12),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 0, 13),
+				plPair(BLUE, HantoPieceType.BUTTERFLY, 0, 0),
+				plPair(RED, HantoPieceType.BUTTERFLY, 0, -1),
+				plPair(BLUE, HantoPieceType.CRAB, 0, 1),
+				plPair(BLUE, HantoPieceType.CRAB, 0, 2),
+				plPair(BLUE, HantoPieceType.CRAB, 0, 3),
+				plPair(BLUE, HantoPieceType.CRAB, 0, 4),
+				plPair(BLUE, HantoPieceType.CRAB, 0, 5),
+				plPair(BLUE, HantoPieceType.CRAB, 0, 6),
+				plPair(BLUE, HantoPieceType.SPARROW, 0, 7),
+				plPair(BLUE, HantoPieceType.SPARROW, 0, 8),
+				plPair(BLUE, HantoPieceType.HORSE, 0, 9),
+				plPair(BLUE, HantoPieceType.HORSE, 0, 10),
+				plPair(BLUE, HantoPieceType.HORSE, 0, 11),
+				plPair(BLUE, HantoPieceType.HORSE, 0, 12),
+				plPair(RED, HantoPieceType.CRAB, 0, 13),
 		};
 		testGame.initializeBoard(initialPieces);
 		testGame.setTurnNumber(25);
-		testGame.setPlayerMoving(HantoPlayerColor.BLUE);
+		testGame.setPlayerMoving(BLUE);
 		assertEquals(MoveResult.RED_WINS, game.makeMove(null, null, null));
 	}
 
 
 	@Test
-	public void testRedPlayerValidResignationAttempt() throws HantoException {
+	public void redPlayerValidResignationAttempt() throws HantoException {
 		// Each allowed up to 6 crabs, 4 horses, 2 sparrows, and 1 butterfly
 		HantoTestGame.PieceLocationPair[] initialPieces = new HantoTestGame.PieceLocationPair[] {
-				plPair(HantoPlayerColor.RED, HantoPieceType.BUTTERFLY, 0, 0),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.BUTTERFLY, 0, -1),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 0, 1),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 0, 2),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 0, 3),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 0, 4),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 0, 5),
-				plPair(HantoPlayerColor.RED, HantoPieceType.CRAB, 0, 6),
-				plPair(HantoPlayerColor.RED, HantoPieceType.SPARROW, 0, 7),
-				plPair(HantoPlayerColor.RED, HantoPieceType.SPARROW, 0, 8),
-				plPair(HantoPlayerColor.RED, HantoPieceType.HORSE, 0, 9),
-				plPair(HantoPlayerColor.RED, HantoPieceType.HORSE, 0, 10),
-				plPair(HantoPlayerColor.RED, HantoPieceType.HORSE, 0, 11),
-				plPair(HantoPlayerColor.RED, HantoPieceType.HORSE, 0, 12),
-				plPair(HantoPlayerColor.BLUE, HantoPieceType.CRAB, 0, 13),
+				plPair(RED, HantoPieceType.BUTTERFLY, 0, 0),
+				plPair(BLUE, HantoPieceType.BUTTERFLY, 0, -1),
+				plPair(RED, HantoPieceType.CRAB, 0, 1),
+				plPair(RED, HantoPieceType.CRAB, 0, 2),
+				plPair(RED, HantoPieceType.CRAB, 0, 3),
+				plPair(RED, HantoPieceType.CRAB, 0, 4),
+				plPair(RED, HantoPieceType.CRAB, 0, 5),
+				plPair(RED, HantoPieceType.CRAB, 0, 6),
+				plPair(RED, HantoPieceType.SPARROW, 0, 7),
+				plPair(RED, HantoPieceType.SPARROW, 0, 8),
+				plPair(RED, HantoPieceType.HORSE, 0, 9),
+				plPair(RED, HantoPieceType.HORSE, 0, 10),
+				plPair(RED, HantoPieceType.HORSE, 0, 11),
+				plPair(RED, HantoPieceType.HORSE, 0, 12),
+				plPair(BLUE, HantoPieceType.CRAB, 0, 13),
 		};
 		testGame.initializeBoard(initialPieces);
 		testGame.setTurnNumber(25);
-		testGame.setPlayerMoving(HantoPlayerColor.RED);
+		testGame.setPlayerMoving(RED);
 		assertEquals(MoveResult.BLUE_WINS, game.makeMove(null, null, null));
 	}
 

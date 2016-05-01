@@ -65,11 +65,11 @@ public class JumpValidator extends MoveValidator {
 			throw new HantoException("For Jump it has to jump over an occpied hex");
 		}
 		
-		dx = dx/distance;
-		dy = dy/distance;
+		dx /= distance;
+		dy /= distance;
 		
 		for(int i = 1; i < distance; i++){
-			HantoCoordinateImpl temp = new HantoCoordinateImpl(i*dx + from.getX(), i*dy + from.getY());
+			HantoCoordinateImpl temp = new HantoCoordinateImpl(i * dx + from.getX(), i * dy + from.getY());
 			if(board.getPieceAt(temp) == null){
 				throw new HantoException("The path in the jump is not occupied");
 			}

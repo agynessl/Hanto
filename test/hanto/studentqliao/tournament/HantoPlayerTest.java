@@ -13,6 +13,7 @@ import hanto.common.HantoException;
 import hanto.common.HantoGame;
 import hanto.common.HantoGameID;
 import hanto.common.HantoPlayerColor;
+import hanto.common.HantoPrematureResignationException;
 import hanto.common.MoveResult;
 import hanto.studentqliao.HantoGameFactory;
 import hanto.studentqliao.tournament.HantoPlayer;

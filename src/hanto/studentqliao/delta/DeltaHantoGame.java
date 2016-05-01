@@ -10,17 +10,17 @@
 
 package hanto.studentqliao.delta;
 
-import hanto.common.HantoCoordinate;
-import hanto.common.HantoException;
+
+
 import hanto.common.HantoGameID;
-import hanto.common.HantoPieceType;
+
 import hanto.common.HantoPlayerColor;
-import hanto.common.MoveResult;
-import hanto.studentqliao.common.WalkValidator;
-import hanto.studentqliao.common.RunValidator;
+
+
+
 import hanto.studentqliao.common.HantoGameBase;
-import hanto.studentqliao.common.MoveValidator;
-import hanto.studentqliao.common.FlyValidator;
+
+
 
 /**
  * Implementation of Delta Hanto Game
@@ -35,45 +35,7 @@ public class DeltaHantoGame extends HantoGameBase{
 	 */
 	public DeltaHantoGame(HantoPlayerColor movesFirst) {
 		super(movesFirst);
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	protected MoveValidator getMoveValidator(HantoPieceType type) {
-		MoveValidator mv = null;
-		if(type == HantoPieceType.BUTTERFLY){
-			mv = new WalkValidator(HantoGameID.DELTA_HANTO);
-		}
-		else if(type == HantoPieceType.CRAB){
-			mv = new RunValidator(HantoGameID.DELTA_HANTO);
-		}
-		else if(type == HantoPieceType.SPARROW){
-			mv = new FlyValidator(HantoGameID.DELTA_HANTO);
-		}
-		return mv;
-	}
-
-	
-	@Override
-	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from, HantoCoordinate to)
-			throws HantoException {
-		
-		//check resign
-		if(pieceType == null && from == null && to == null){
-			gameOver = true;
-			return onMove == HantoPlayerColor.RED ? MoveResult.BLUE_WINS : MoveResult.RED_WINS;
-		}
-		
-		//game end check
-		checkGameEnd();
-		//move check
-		validateMove(pieceType, from, to);
-		//make the move
-		doMove(pieceType, from, to);
-		//increment the count
-		incrementMove();
-		//return result
-		return checkResult();
+		gameVersion = HantoGameID.DELTA_HANTO;
 	}
 
 }
